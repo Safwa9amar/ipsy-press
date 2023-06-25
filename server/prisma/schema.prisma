@@ -1,0 +1,210 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "mysql"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id            Int       @id @default(autoincrement())
+  email         String    @unique
+  phone         String?   @unique
+  firstName     String?
+  lastName      String?
+  birthDate     DateTime?
+  age           Int?
+  sex           String?
+  adress        String?
+  // relation to jobs
+  jobsID        Int?
+  jobs          Jobs?     @relation(fields: [jobsID], references: [id])
+  maritalStatus String?
+  workPlace     String?
+  workSeniority String?
+  disability    Boolean?
+  other         String?
+  createdAt     DateTime  @default(now())
+  updatedAt     DateTime  @updatedAt
+  password      String
+
+  alarms   AlarmClock[]
+  score    Int?
+  diseaseID Int      @default(0)
+  disease  Disease      @relation(fields: [diseaseID], references: [id]) 
+}
+
+model AlarmClock {
+  id        Int      @id @default(autoincrement())
+  userId    Int
+  user      User     @relation(fields: [userId], references: [id])
+  time      DateTime
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model Jobs {
+  id        Int      @id @default(autoincrement())
+  name      String
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  // relation to user
+  users     User[]
+}
+
+model Level {
+  id            Int        @id @default(autoincrement())
+  name          String
+  status        Boolean    @default(false)
+  requiredScore Int        @default(0)
+  createdAt     DateTime   @default(now())
+  updatedAt     DateTime   @updatedAt
+  subLevels     subLevel[]
+  exercises     exercise[]
+}
+
+model subLevel {
+  id            Int           @id @default(autoincrement())
+  name          String
+  status        Boolean       @default(false)
+  requiredScore Int           @default(10)
+  createdAt     DateTime      @default(now())
+  updatedAt     DateTime      @updatedAt
+  // relation to level
+  levelId       Int
+  level         Level         @relation(fields: [levelId], references: [id])
+  // relation to exercise
+  exercises     exercise[]
+  // relation to subSubLevel
+  subSubLevels  subSubLevel[]
+}
+
+model subSubLevel {
+  id            Int          @id @default(autoincrement())
+  name          String
+  status        Boolean      @default(false)
+  requiredScore Int          @default(15)
+  createdAt     DateTime     @default(now())
+  updatedAt     DateTime     @updatedAt
+  // relation to subLevel
+  subLevelId    Int
+  subLevel      subLevel     @relation(fields: [subLevelId], references: [id])
+  // relation to finalLevel
+  finalLevel    finalLevel[]
+  // relation to exercise
+  exercises     exercise[]
+}
+
+model finalLevel {
+  id            Int         @id @default(autoincrement())
+  name          String
+  status        Boolean     @default(false)
+  requiredScore Int         @default(20)
+  createdAt     DateTime    @default(now())
+  updatedAt     DateTime    @updatedAt
+  // relation to subSubLevel
+  subSubLevelId Int
+  subSubLevel   subSubLevel @relation(fields: [subSubLevelId], references: [id])
+  // relation to exercise
+  exercises     exercise[]
+}
+
+model exercise {
+  id           Int         @id @default(autoincrement())
+  title        String
+  description  String
+  image        String
+  video        String
+  instructions String
+  status       Boolean
+  // relation to Level
+  levelId      Int
+  level        Level       @relation(fields: [levelId], references: [id])
+  // relation to subLevel
+  subLevelId   Int
+  subLevel     subLevel    @relation(fields: [subLevelId], references: [id])
+  // relation to subSubLevel
+  subSubLevel  Int
+  subSub       subSubLevel @relation(fields: [subSubLevel], references: [id])
+  // relation to finalLevel
+  finalLevelId Int
+  finalLevel   finalLevel  @relation(fields: [finalLevelId], references: [id])
+  // relation to step
+  stepID       Int
+  step         Step        @relation(fields: [stepID], references: [id])
+  // relation to question
+  questionsID  Int
+  questions    Question?   @relation(fields: [questionsID], references: [id])
+  // relqtion to advice
+  adviceID     Int
+  advice       Advice?     @relation(fields: [adviceID], references: [id])
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model Step {
+  id        Int        @id @default(autoincrement())
+  name      String
+  createdAt DateTime   @default(now())
+  updatedAt DateTime   @updatedAt
+  // relation to exercise
+  exercises exercise[]
+}
+
+model Question {
+  id        Int            @id @default(autoincrement())
+  title     String
+  image     String
+  type      selectQuestion @default(Written)
+  createdAt DateTime       @default(now())
+  updatedAt DateTime       @updatedAt
+  // relation to exercise
+  exercises exercise[]
+}
+
+enum selectQuestion {
+  Vocal
+  Written
+  Visual
+}
+
+model Advice {
+  id        Int        @id @default(autoincrement())
+  title     String
+  image     String
+  createdAt DateTime   @default(now())
+  updatedAt DateTime   @updatedAt
+  // relation to exercise
+  exercises exercise[]
+}
+
+model AnswerOptions {
+  id        Int      @id @default(autoincrement())
+  title     String
+  image     String
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model Food {
+  id          Int      @id @default(autoincrement())
+  title       String
+  image       String
+  description String
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+}
+
+model Disease {
+  id        Int      @id @default(autoincrement())
+  name      String
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  // relation to user
+  users     User[]
+}

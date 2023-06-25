@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "317397735711",
+    "project_id": "ipsy-press",
+    "storage_bucket": "ipsy-press.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:317397735711:android:5d8072da26467ab768382a",
+        "android_client_info": {
+          "package_name": "com.ipsy.press"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "317397735711-1glut3j9vli811cijsbod0qi4pfv44aj.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDFRImBWyvTyB6qkXWtzfx7uYg8bLO9vXE"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "317397735711-1glut3j9vli811cijsbod0qi4pfv44aj.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
