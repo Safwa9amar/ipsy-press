@@ -1,34 +1,16 @@
 import { View, Text, TextInput, TouchableOpacity } from "react-native";
-import React, { useEffect, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import { Animated } from "react-native";
 import { ActivityIndicator } from "react-native";
-import AsyncStorage from "@react-native-async-storage/async-storage";
 import axios from "axios";
 import TextAlert from "../../components/TextAlert";
 import { BASE_URL } from "@env";
 import { useNavigation } from "@react-navigation/native";
+import { AuthContext } from "../../context/AuthContext";
 
-const saveToken = async (value) => {
-  if (!value) return;
-  try {
-    AsyncStorage.removeItem("token");
-    await AsyncStorage.setItem("token", value);
-  } catch (e) {
-    console.log(e);
-  }
-};
-
-const getToken = async () => {
-  try {
-    const value = await AsyncStorage.getItem("token");
-    if (value !== null) {
-      return value;
-    }
-  } catch (e) {
-    console.log(e);
-  }
-};
 export default function Connect() {
+  const userAuth = useContext(AuthContext);
+  console.log(userAuth);
   const [translateXAnim] = useState(new Animated.Value(-400));
   const [fadeAnim] = useState(new Animated.Value(0));
   const [scaleAnim] = useState(new Animated.Value(0));
@@ -53,7 +35,7 @@ export default function Connect() {
           email: email,
           password: password,
         }); // Replace with your API endpoint
-        setToken(response.data.token);
+        userAuth.login(response.data.token);
         setIsLoading(false);
         setAlertType("success");
         setAlertMsg("Connexion réussie ✌✔ ");
@@ -69,12 +51,6 @@ export default function Connect() {
 
     fetchData();
   };
-  useEffect(() => {
-    if (token) {
-      saveToken(token);
-      console.log(token);
-    }
-  }, [token]);
 
   useEffect(() => {
     Animated.timing(translateXAnim, {

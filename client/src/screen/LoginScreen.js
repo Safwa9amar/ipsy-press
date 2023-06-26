@@ -4,6 +4,8 @@ import MyButton from "../components/MyButton";
 import Divider from "../components/Divider";
 import Connect from "./login/Connect";
 import { useNavigation } from "@react-navigation/native";
+
+
 export default function Login() {
   const [login, setlogin] = useState(false);
   const navigation = useNavigation();
@@ -44,7 +46,14 @@ export default function Login() {
             }}
           >
             <MyButton onPress={loginHandler} color="#D57A68" text="Connexion" />
-            <MyButton color="#FBCCBA" text="Inscription" textColor="#000" />
+            <MyButton
+              onPress={() => {
+                navigation.navigate("Sign-up");
+              }}
+              color="#FBCCBA"
+              text="Inscription"
+              textColor="#000"
+            />
             <Text>
               <Text style={{ color: "#D57A68" }}>Mot de passe oublié ?</Text>
             </Text>

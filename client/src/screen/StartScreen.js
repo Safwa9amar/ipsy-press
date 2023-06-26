@@ -1,7 +1,14 @@
 import { ActivityIndicator, Image, StyleSheet, Text, View } from "react-native";
-import React from "react";
+import React, { useEffect } from "react";
+import { BASE_URL } from "@env";
+import axios from "axios";
 
-export default function StartScreen() {
+export default function StartScreen({ setIsLoading }) {
+  useEffect(() => {
+    axios.get(BASE_URL).then((res) => {
+      res.status === 200 ? setIsLoading(false) : null;
+    });
+  }, []);
   return (
     <View style={styles.container}>
       <Image source={require("../../assets/logo.png")} />

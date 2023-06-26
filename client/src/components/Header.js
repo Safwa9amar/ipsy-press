@@ -9,7 +9,13 @@ export default function Header() {
     <View style={styles.container}>
       <Text style={styles.title}>Aujourd'hui</Text>
       <View style={styles.rightContainer}>
-        <Ionicons name="notifications-outline" size={32} color="#D77A68" />
+        <TouchableOpacity
+          onPress={() => {
+            navigation.navigate("Notification");
+          }}
+        >
+          <Ionicons name="notifications-outline" size={32} color="#D77A68" />
+        </TouchableOpacity>
         <TouchableOpacity
           onPress={() => {
             navigation.navigate("Profile");
