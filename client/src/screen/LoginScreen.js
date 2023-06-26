@@ -2,7 +2,7 @@ import { View, Text, Image, StyleSheet, TouchableOpacity } from "react-native";
 import React, { useState } from "react";
 import MyButton from "../components/MyButton";
 import Divider from "../components/Divider";
-import Connect from "./login/Connect";
+import Connect from "./Loginlayout/Connect";
 import { useNavigation } from "@react-navigation/native";
 
 
