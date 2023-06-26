@@ -5,6 +5,8 @@ import { ActivityIndicator } from "react-native";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import axios from "axios";
 import TextAlert from "../../components/TextAlert";
+import { BASE_URL } from "@env";
+import { useNavigation } from "@react-navigation/native";
 
 const saveToken = async (value) => {
   if (!value) return;
@@ -36,7 +38,7 @@ export default function Connect() {
   const [token, setToken] = useState("");
   const [alertType, setAlertType] = useState("");
   const [alertMsg, setAlertMsg] = useState("");
-  1;
+  const navigation = useNavigation();
 
   const loginHandler = () => {
     if (email === "" || password === "") {
@@ -47,22 +49,22 @@ export default function Connect() {
     setIsLoading(true);
     const fetchData = async () => {
       try {
-        const response = await axios.post(
-          "http://192.168.1.4:3000/users/login",
-          {
-            email: email,
-            password: password,
-          }
-        ); // Replace with your API endpoint
+        const response = await axios.post(`${BASE_URL}users/login`, {
+          email: email,
+          password: password,
+        }); // Replace with your API endpoint
         setToken(response.data.token);
         setIsLoading(false);
         setAlertType("success");
         setAlertMsg("Connexion réussie ✌✔ ");
+        setTimeout(() => {
+          navigation.navigate("Home");
+        }, 2000);
       } catch (error) {
         setIsLoading(false);
         setAlertType("error");
         setAlertMsg("Email ou mot de passe incorrect reessayez ! 🤷‍♀️ ");
-      } 
+      }
     };
 
     fetchData();
@@ -96,7 +98,6 @@ export default function Connect() {
       style={{
         flex: 1,
         padding: 40,
-        marginLeft: 20,
       }}
     >
       <View>

@@ -3,10 +3,9 @@ import {
   Text,
   TouchableOpacity,
   ScrollView,
-  Button,
   ActivityIndicator,
 } from "react-native";
-import React, { useContext, useEffect, useState } from "react";
+import React, { useContext, useEffect, useMemo, useState } from "react";
 import RNDateTimePicker from "@react-native-community/datetimepicker";
 import InputText from "../components/InputText";
 import { Picker } from "@react-native-picker/picker";
@@ -14,6 +13,8 @@ import Ionicons from "@expo/vector-icons/Ionicons";
 import { API_URL, BASE_URL } from "@env";
 import axios from "axios";
 import TextAlert from "../components/TextAlert";
+import RadioGroup from "react-native-radio-buttons-group";
+import EmailValidate from "../helpers/EmailValidate";
 
 export default function Registre() {
   const [date, setDate] = React.useState(new Date(1598051730000));
@@ -25,28 +26,41 @@ export default function Registre() {
   const [alertType, setAlertType] = useState("");
   const [alertMsg, setAlertMsg] = useState("");
   const [isLoading, setIsLoading] = useState(false);
+  const [disability, setDisability] = useState(false);
   const [userData, setUserData] = useState({
-    email: "",
-    password: "",
-    confirmPassword: "",
-    adress: "",
-    birthDate: "",
-    disability: "",
     firstName: "",
     lastName: "",
+    sex: "male",
+    birthDate: "",
     maritalStatus: "",
-    other: "",
-    sex: "",
-    workPlace: "",
-    workSeniority: "",
+    adress: "",
+    email: "",
     phone: "",
-    diseaseID: "",
     jobsID: "",
-    //
-    createdAt: "",
-    updatedAt: "",
+    workSeniority: "",
+    workPlace: "",
+    other: "/",
+    disability: disability,
+    diseaseID: "",
+    password: "",
+    confirmPassword: "",
   });
 
+  const radioButtons = useMemo(
+    () => [
+      {
+        id: "1", // acts as primary key, should be unique and non-empty string
+        label: "Oui",
+        value: true,
+      },
+      {
+        id: "2",
+        label: "Non",
+        value: false,
+      },
+    ],
+    []
+  );
   const changesHandler = (name, value) => {
     setUserData({ ...userData, [name]: value });
   };
@@ -65,70 +79,55 @@ export default function Registre() {
   };
 
   const checkInputs = () => {
-    if (userData.firstName === "") {
-      setAlertType("warning");
-      setAlertMsg("Veuillez saisir votre nom");
-      return false;
+    for (const key of Object.keys(userData)) {
+      if (typeof userData[key] === "boolean") continue;
+      if (userData[key] === "") {
+        setAlertType("warning");
+        setAlertMsg(
+          `Veuillez saisir votre ${
+            key === "lastName"
+              ? "prénom"
+              : key === "firstName"
+              ? "nom"
+              : key === "birthDate"
+              ? "date de naissance"
+              : key === "maritalStatus"
+              ? "situation familiale"
+              : key === "adress"
+              ? "adresse"
+              : key === "email"
+              ? "email"
+              : key === "phone"
+              ? "numéro de téléphone"
+              : key === "jobsID"
+              ? "emploi"
+              : key === "workSeniority"
+              ? "ancienneté"
+              : key === "workPlace"
+              ? "lieu de travail"
+              : key === "diseaseID"
+              ? "maladie"
+              : key === "password"
+              ? "mot de passe"
+              : key === "confirmPassword"
+              ? "confirmation de mot de passe"
+              : "autre"
+          }`
+        );
+        return false;
+      }
     }
-    if (userData.lastName === "") {
-      setAlertType("warning");
-      setAlertMsg("Veuillez saisir votre prénom");
-      return false;
-    }
-    if (userData.birthDate === "") {
-      setAlertType("warning");
-      setAlertMsg("Veuillez saisir votre date de naissance");
-      return false;
-    }
-    if (userData.maritalStatus === "") {
-      setAlertType("warning");
-      setAlertMsg("Veuillez saisir votre état civil");
-      return false;
-    }
-
-    if (userData.adress === "") {
-      setAlertType("warning");
-      setAlertMsg("Veuillez saisir votre adresse");
-      return false;
-    }
-    if (userData.email === "") {
-      setAlertType("warning");
-      setAlertMsg("Veuillez saisir votre email");
-      return false;
-    }
-    if (userData.phone === "") {
-      setAlertType("warning");
-      setAlertMsg("Veuillez saisir votre numéro de téléphone");
-      return false;
-    }
-    if (userData.password === "") {
-      setAlertType("warning");
-      setAlertMsg("Veuillez saisir votre mot de passe");
-      return false;
-    }
-    if (userData.confirmPassword === "") {
-      setAlertType("warning");
-      setAlertMsg("Veuillez confirmer votre mot de passe");
-      return false;
-    }
-
-    if (userData.disability === "") {
-      setAlertType("warning");
-      setAlertMsg(
-        "Veuillez saisir votre handicap si vous n'avez pas de handicap veuillez saisir non"
-      );
-      return false;
-    }
-
-    if (userData.other === "") {
-      setAlertType("warning");
-      setAlertMsg("Veuillez saisir votre autre");
-      return false;
-    }
+    console.log("all inputs are filled");
+    return true;
   };
 
   const register = () => {
     if (!checkInputs()) return;
+    if (!EmailValidate(userData.email)) {
+      setAlertType("warning");
+      setAlertMsg("Veuillez saisir un email valide");
+      return;
+    }
     if (!checkPassword()) return;
     setAlertMsg("");
     setIsLoading(true);
@@ -143,14 +142,22 @@ export default function Registre() {
           setAlertMsg("");
         }, 3000);
       })
+
       .catch((err) => {
-        setIsLoading(false);
-        setAlertType("error");
-        setAlertMsg("Erreur d'inscription veuillez réessayer");
+        if (err.response.status === 409) {
+          setAlertType("warning");
+          setAlertMsg("email ou numéro de téléphone déjà utilisé");
+          setIsLoading(false);
+        } else {
+          setIsLoading(false);
+          setAlertType("error");
+          setAlertMsg("Erreur d'inscription veuillez réessayer");
+        }
       });
   };
 
   useEffect(() => {
+    console.log(API_URL);
     axios
       .get(`${API_URL}jobs`)
       .then((res) => {
@@ -164,9 +171,9 @@ export default function Registre() {
       })
       .catch((err) => console.log(err));
   }, [API_URL]);
-  useEffect(() => {
-    console.log(userData);
-  }, [userData]);
+  // useEffect(() => {
+  //   console.log(userData);
+  // }, [userData]);
   return (
     <ScrollView>
       <View
@@ -192,6 +199,7 @@ export default function Registre() {
         </Text>
 
         <InputText
+        
           name="firstName"
           changesHandler={changesHandler}
           icon={"person"}
@@ -199,6 +207,7 @@ export default function Registre() {
           placeholder="Saissisez votre nom ici"
         />
         <InputText
+        
           name="lastName"
           changesHandler={changesHandler}
           icon={"person"}
@@ -238,6 +247,7 @@ export default function Registre() {
           </View>
           <TouchableOpacity onPress={() => setIsSelectingDate(true)}>
             <InputText
+            
               changesHandler={changesHandler}
               name={"birthDate"}
               label="Date de naissance"
@@ -286,6 +296,7 @@ export default function Registre() {
           </Picker>
         </View>
         <InputText
+        
           name="adress"
           changesHandler={changesHandler}
           icon={"location"}
@@ -293,6 +304,7 @@ export default function Registre() {
           placeholder="Saisissez votre adresse ici"
         />
         <InputText
+        
           name="email"
           changesHandler={changesHandler}
           icon={"mail"}
@@ -300,6 +312,7 @@ export default function Registre() {
           placeholder="Saisissez votre email ici"
         />
         <InputText
+        
           name="phone"
           changesHandler={changesHandler}
           icon={"call"}
@@ -335,21 +348,36 @@ export default function Registre() {
           </Picker>
         </View>
         <InputText
+        
           name="workSeniority"
           changesHandler={changesHandler}
           label="Ancienneté au travail"
         />
         <InputText
+        
           name="workPlace"
           changesHandler={changesHandler}
           label="Lieu de travail"
         />
-        <InputText name="other" changesHandler={changesHandler} label="Autre" />
         <InputText
+         name="other" changesHandler={changesHandler} label="Autre" />
+
+        <InputText
+        
           name="disability"
           changesHandler={changesHandler}
-          label="Avez-vous un handicap? expliquer"
-        />
+          label="Avez-vous un handicap "
+        >
+          <RadioGroup
+            radioButtons={radioButtons}
+            onPress={() => {
+              setDisability(!disability);
+              changesHandler("disability", !disability);
+            }}
+            selectedId={disability ? "1" : "2"}
+            layout="row"
+          />
+        </InputText>
         <View
           style={{
             backgroundColor: "#FAEDE7",
@@ -383,6 +411,7 @@ export default function Registre() {
           </Picker>
         </View>
         <InputText
+        
           name="password"
           changesHandler={changesHandler}
           icon={"lock-closed"}
@@ -390,6 +419,7 @@ export default function Registre() {
           placeholder="Saisissez votre mot de passe ici"
         />
         <InputText
+        
           name="confirmPassword"
           changesHandler={changesHandler}
           icon={"lock-closed"}
@@ -436,7 +466,7 @@ export default function Registre() {
           </TouchableOpacity>
           <TouchableOpacity
             onPress={() => {
-              console.log("user cancel registration");
+              setUserData({});
             }}
             style={{
               alignSelf: "flex-end",

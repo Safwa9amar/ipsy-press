@@ -1,33 +1,26 @@
-import { StyleSheet, Text, View } from "react-native";
+import { FlatList, StyleSheet, Text, View } from "react-native";
 import React, { useEffect, useState } from "react";
 import StartScreen from "./src/screen/StartScreen";
 import Login from "./src/screen/Login";
 import Registre from "./src/screen/Registre";
-import { BASE_URL } from '@env';
-
-const theme = {
-  colors: {
-    primary: "#D57A68",
-    secondary: "#FFF3EE",
-    text: "#481D14",
-    background: "#FFF3EE",
-    border: "#000000",
-    muted: "#000000",
-    success: "#000000",
-    error: "#000000",
-    warning: "#000000",
-    info: "#000000",
-    highlight: "#000000",
-  },
-};
+import { BASE_URL } from "@env";
+import { NavigationContainer } from "@react-navigation/native";
+import { createStackNavigator } from "@react-navigation/stack";
+import Home from "./src/screen/Home";
+import VerfiyLogin from "./src/helpers/VerifyLogin";
+import Header from "./src/components/Header";
+import ProfileScreen from "./src/screen/ProfileScreen";
 
 export default function App() {
+  const baseUrl = BASE_URL;
   const [isLoading, setIsLoading] = useState(true);
   const [isLogged, setLogged] = useState(false);
-  
+  const Stack = createStackNavigator();
+
   useEffect(() => {
-    fetch(BASE_URL).then((response) => {
+    fetch(baseUrl).then((response) => {
       if (response.ok) {
+        setLogged(true);
         setTimeout(() => {
           setIsLoading(false); // 2 seconds
         }, 2000);
@@ -36,20 +29,32 @@ export default function App() {
         console.log("Error");
       }
     });
+    VerfiyLogin().then((data) => {
+      console.log(data, isLogged ? "Home" : "Login");
+      setLogged(data);
+    });
   }, []);
   return (
-    <View style={styles.container}>
-      {isLoading ? <StartScreen /> : <Registre />}
-    </View>
+    <>
+      {isLoading ? (
+        <StartScreen />
+      ) : (
+        <NavigationContainer>
+          <Stack.Navigator
+            screenOptions={{
+              headerShown: isLogged,
+              cardStyle: { backgroundColor: "#FFF3EE" },
+              header: () => <Header />,
+            }}
+            initialRouteName={isLogged ? "Home" : "Login"}
+          >
+            <Stack.Screen name="Home" component={Home} />
+            <Stack.Screen name="Profile" component={ProfileScreen} />
+            <Stack.Screen name="Login" component={Login} />
+            <Stack.Screen name="sign-in" component={Registre} />
+          </Stack.Navigator>
+        </NavigationContainer>
+      )}
+    </>
   );
 }
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    gap: 10,
-    backgroundColor: theme.colors.background,
-    alignItems: "center",
-    justifyContent: "center",
-  },
-});

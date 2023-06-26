@@ -2,6 +2,7 @@ import { Dimensions, Text, TextInput, View } from "react-native";
 import Ionicons from "@expo/vector-icons/Ionicons";
 
 const InputText = ({
+  children,
   changesHandler,
   name,
   value,
@@ -12,6 +13,7 @@ const InputText = ({
   setIsSelectingDate,
   ...props
 }) => {
+  
   return (
     <View
       style={{
@@ -31,7 +33,9 @@ const InputText = ({
         }}
       >
         {icon && <Ionicons name={icon} size={24} color="#D77A68" />}
-        {withInput && (
+        {
+        children || 
+        withInput && (
           <TextInput
             onTouchStart={() => {
               setIsSelectingDate && setIsSelectingDate(true);
@@ -53,7 +57,8 @@ const InputText = ({
             }}
             {...props}
           />
-        )}
+        )
+        }
       </View>
     </View>
   );

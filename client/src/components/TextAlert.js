@@ -10,7 +10,6 @@ export default function TextAlert({ type, message }) {
     >
       <Text
         style={{
-          textTransform: "capitalize",
           color:
             type === "success"
               ? "#0AFF00"

@@ -3,8 +3,10 @@ import React, { useState } from "react";
 import MyButton from "../components/MyButton";
 import Divider from "../components/Divider";
 import Connect from "./login/Connect";
+import { useNavigation } from "@react-navigation/native";
 export default function Login() {
   const [login, setlogin] = useState(false);
+  const navigation = useNavigation();
   const loginHandler = () => {
     setlogin(true);
   };
