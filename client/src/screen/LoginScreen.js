@@ -1,17 +1,23 @@
 import { View, Text, Image, StyleSheet, TouchableOpacity } from "react-native";
-import React, { useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import MyButton from "../components/MyButton";
 import Divider from "../components/Divider";
 import Connect from "./Loginlayout/Connect";
 import { useNavigation } from "@react-navigation/native";
-
+import { AuthContext } from "../context/AuthContext";
 
 export default function Login() {
+  const userAuth = useContext(AuthContext);
   const [login, setlogin] = useState(false);
   const navigation = useNavigation();
   const loginHandler = () => {
     setlogin(true);
   };
+  useEffect(() => {
+    if (userAuth.user) {
+      navigation.navigate("Home");
+    }
+  }, [userAuth.user]);
   return (
     <>
       {!login ? (

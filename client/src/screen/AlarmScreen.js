@@ -2,18 +2,15 @@ import {
   View,
   Text,
   StyleSheet,
-  Modal,
   TouchableOpacity,
-  FlatList,
   Switch,
-  ImageBackground,
-  ActivityIndicator,
   ScrollView,
   RefreshControl,
 } from "react-native";
-import React, { useContext, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import { DateTimePickerAndroid } from "@react-native-community/datetimepicker";
 import { AlarmContext } from "../context/AlarmContext";
+import { AuthContext } from "../context/AuthContext";
 
 export default function AlarmScreen() {
   const data = [
@@ -26,8 +23,9 @@ export default function AlarmScreen() {
     { id: 7, day: "V" },
   ];
   const alarm = useContext(AlarmContext);
+  const { user, token, isLoggedIn } = useContext(AuthContext);
   const [days, setDays] = useState(alarm.alarmDays);
-  const onChange = (event, selectedDate) => {
+  const onChange = (selectedDate) => {
     const currentDate = selectedDate;
     alarm.handleAlarmChanges(currentDate.toLocaleTimeString().slice(0, 5));
   };
@@ -40,20 +38,27 @@ export default function AlarmScreen() {
       is24Hour: true,
     });
   };
+  useEffect(() => {
+    if (isLoggedIn) {
+      alarm.refresh(token, user.id);
+    }
+  }, [isLoggedIn, user]);
 
   return (
     <ScrollView
       contentContainerStyle={{
         ...styles.container,
-        backgroundColor: alarm.alarmOn ? "#AFC" : "#fff",
-        paddingVertical: '100%',
+        backgroundColor: alarm.alarmOn ? "#ABE" : "#fff",
+        paddingVertical: "100%",
         paddingTop: 100,
       }}
       refreshControl={
         <RefreshControl
           refreshing={!alarm.isLoaded}
           onRefresh={() => {
-            alarm.refresh();
+            if (isLoggedIn) {
+              alarm.refresh(token, user.id);
+            }
           }}
           tintColor="#fff"
         />
@@ -76,7 +81,7 @@ export default function AlarmScreen() {
                 <TouchableOpacity
                   key={item.id}
                   style={
-                    alarm.alarmDays.includes(item.id)
+                    days.includes(item.id)
                       ? { ...styles.dayContainerItem, backgroundColor: "#AFC" }
                       : styles.dayContainerItem
                   }

@@ -10,14 +10,12 @@ import { AuthContext } from "../../context/AuthContext";
 
 export default function Connect() {
   const userAuth = useContext(AuthContext);
-  console.log(userAuth);
   const [translateXAnim] = useState(new Animated.Value(-400));
   const [fadeAnim] = useState(new Animated.Value(0));
   const [scaleAnim] = useState(new Animated.Value(0));
   const [isLoading, setIsLoading] = useState(false);
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
-  const [token, setToken] = useState("");
+  const [email, setEmail] = useState("test@gmail.com");
+  const [password, setPassword] = useState("11111111");
   const [alertType, setAlertType] = useState("");
   const [alertMsg, setAlertMsg] = useState("");
   const navigation = useNavigation();
@@ -36,6 +34,7 @@ export default function Connect() {
           password: password,
         }); // Replace with your API endpoint
         userAuth.login(response.data.token);
+        userAuth.setUser(response.data.user);
         setIsLoading(false);
         setAlertType("success");
         setAlertMsg("Connexion réussie ✌✔ ");
@@ -45,6 +44,7 @@ export default function Connect() {
       } catch (error) {
         setIsLoading(false);
         setAlertType("error");
+        console.log(error);
         setAlertMsg("Email ou mot de passe incorrect reessayez ! 🤷‍♀️ ");
       }
     };

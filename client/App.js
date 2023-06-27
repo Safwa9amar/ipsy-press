@@ -1,5 +1,4 @@
-import { FlatList, StyleSheet, Text, View } from "react-native";
-import React, { useContext, useEffect, useState } from "react";
+import React, {  useState } from "react";
 import StartScreen from "./src/screen/StartScreen";
 import Login from "./src/screen/LoginScreen";
 import Registre from "./src/screen/RegistreScreen";
@@ -9,12 +8,11 @@ import Home from "./src/screen/HomeScreen";
 import Header from "./src/components/Header";
 import ProfileScreen from "./src/screen/ProfileScreen";
 import NotificationScreen from "./src/screen/NotificationScreen";
-import { AuthContext, AuthProvider } from "./src/context/AuthContext";
+import {  AuthProvider } from "./src/context/AuthContext";
 import { AlarmProvider } from "./src/context/AlarmContext";
 
 export default function App() {
-  const userAuth = useContext(AuthContext);
-  const [isLoading, setIsLoading] = useState(false);
+  const [isLoading, setIsLoading] = useState(true);
   const Stack = createStackNavigator();
 
   return (
@@ -29,7 +27,7 @@ export default function App() {
                 cardStyle: { backgroundColor: "#FFF3EE" },
                 header: () => <Header />,
               }}
-              initialRouteName={1 ? "Home" : "Login"}
+              initialRouteName={"Login"}
             >
               <Stack.Screen name="Home" component={Home} />
               <Stack.Screen name="Profile" component={ProfileScreen} />

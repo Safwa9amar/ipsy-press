@@ -1,52 +1,47 @@
 import React, { createContext, useState, useEffect, useContext } from "react";
 import AsyncStorage from "@react-native-async-storage/async-storage";
-import { AlarmContext } from "./AlarmContext";
-import axios from "axios";
-import { API_URL } from "@env";
 
 const AuthContext = createContext();
 
 const AuthProvider = ({ children }) => {
-  const alarm = useContext(AlarmContext);
   const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const [user, setUser] = useState(null);
   const [token, setToken] = useState();
 
-  const checkToken = async () => {
-    const token = await AsyncStorage.getItem("token");
-    if (token !== null) {
-      return token;
+  // Saving the token
+  const saveToken = async (token) => {
+    try {
+      await AsyncStorage.setItem("token", token);
+    } catch (error) {
+      console.log("Error saving token:", error);
     }
   };
-  const getAlarm = async () => {
+
+  // Retrieving the token
+  const getToken = async () => {
     try {
-      const alarmData = await axios.get(API_URL + "alarm", {
-        params: {
-          token: token,
-        },
-      });
-      alarm.handleAlarmChanges(alarmData.data.alarm);
-      alarm.handleAlarmDaysChanges(alarmData.data.alarmDays);
-      alarm.handleAlarmOn(alarmData.data.alarmOn);
+      const token = await AsyncStorage.getItem("token");
+      return token;
     } catch (error) {
-      console.log(error);
+      console.log("Error retrieving token:", error);
     }
   };
 
   useEffect(() => {
-    async () => {
-      const token = await checkToken();
+    getToken().then((token) => {
       if (token !== null) {
         setToken(token);
         setIsLoggedIn(true);
       }
-    };
+    });
   }, []);
 
   const login = async (loginToken) => {
-    AsyncStorage.setItem("token", loginToken).then((data) => {
-      if (data !== null) setIsLoggedIn(true);
-      getAlarm();
-    });
+    if (loginToken !== null) {
+      saveToken(loginToken);
+      setToken(loginToken);
+      setIsLoggedIn(true);
+    }
   };
 
   const logout = async () => {
@@ -55,7 +50,7 @@ const AuthProvider = ({ children }) => {
   };
 
   return (
-    <AuthContext.Provider value={{ isLoggedIn, login, logout }}>
+    <AuthContext.Provider value={{ user,token, setUser, isLoggedIn, login, logout }}>
       {children}
     </AuthContext.Provider>
   );
