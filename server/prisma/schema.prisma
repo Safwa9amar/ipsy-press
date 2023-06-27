@@ -11,9 +11,9 @@ datasource db {
 }
 
 model User {
-  id            Int       @id @default(autoincrement())
-  email         String    @unique
-  phone         String?   @unique
+  id            Int          @id @default(autoincrement())
+  email         String       @unique
+  phone         String?      @unique
   firstName     String?
   lastName      String?
   birthDate     DateTime?
@@ -22,18 +22,18 @@ model User {
   adress        String?
   // relation to jobs
   jobsID        Int?
-  jobs          Jobs?     @relation(fields: [jobsID], references: [id])
+  jobs          Jobs?        @relation(fields: [jobsID], references: [id])
   maritalStatus String?
   workPlace     String?
   workSeniority String?
   disability    Boolean?
   other         String?
-  createdAt     DateTime  @default(now())
-  updatedAt     DateTime  @updatedAt
+  createdAt     DateTime     @default(now())
+  updatedAt     DateTime     @updatedAt
   password      String
   score         Int?
-  diseaseID     Int       @default(0)
-  disease       Disease   @relation(fields: [diseaseID], references: [id])
+  diseaseID     Int          @default(0)
+  disease       Disease      @relation(fields: [diseaseID], references: [id])
   Alarm         AlarmClock[]
 }
 
@@ -205,7 +205,7 @@ model AlarmClock {
   title     String   @default("Alarm")
   time      DateTime
   days      String
-  isOn      Boolean
+  isOn      Boolean  @default(false)
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
   // relation to user

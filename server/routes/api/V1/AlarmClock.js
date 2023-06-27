@@ -4,66 +4,103 @@ const { PrismaClient } = require("@prisma/client");
 const authenticateToken = require("../../../middleware/userAuth");
 const prisma = new PrismaClient();
 
-router.get("/:id",authenticateToken, function (req, res, next) {
+router.get("/:id", authenticateToken, function (req, res, next) {
   const id = req.params.id;
   const alarm = prisma.alarmClock.findMany({
     select: {
+      id: true,
       time: true,
       days: true,
       isOn: true,
     },
     where: {
       userId: parseInt(id),
-    },  
+    },
   });
   alarm.then((data) => {
     res.json(data[0]).status(200);
   });
 });
 
-router.post("/", function (req, res, next) {
-  const alarm = req.body.alarm;
-  const alarmDays = req.body.alarmDays;
-  const alarmOn = req.body.alarmOn;
-  const userId = req.body.userId;
-  // check if alarm already exists
-  const alarmExists = prisma.alarm
-    .findUnique({
+router.post("/", authenticateToken, function (req, res, next) {
+  const alarm = req.body.time;
+  const alarmDays = req.body.days;
+  const alarmOn = req.body.isOn;
+  const id = req.body.id;
+  const createAlarm = prisma.alarmClock.upsert({
+    select: {
+      user: true,
+    },
+    where: {
+      id,
+    },
+    create: {
+      time: alarm,
+      days: alarmDays,
+      isOn: alarmOn,
+      user: {
+        connect: {
+          id: parseInt(id),
+        },
+      },
+    },
+    update: {},
+  });
+  createAlarm.then((data) => {
+    res.json(data).status(200);
+  });
+});
+
+router.post("/on", authenticateToken, function (req, res, next) {
+  const alarmOn = req.body.isOn;
+  const id = req.body.id;
+  prisma.alarmClock
+    .update({
       where: {
-        userId: userId,
+        id: id,
+      },
+      data: {
+        isOn: alarmOn,
       },
     })
     .then((data) => {
-      if (data) {
-        // update alarm
-        const updateAlarm = prisma.alarm.update({
-          where: {
-            userId: userId,
-          },
-          data: {
-            time: alarm,
-            days: alarmDays,
-            isOn: alarmOn,
-            updatedAt: new Date(),
-          },
-        });
-        updateAlarm.then((data) => {
-          res.json(data).status(200);
-        });
-      } else {
-        // create alarm
-        const createAlarm = prisma.alarm.create({
-          data: {
-            alarm: alarm,
-            alarmDays: alarmDays,
-            alarmOn: alarmOn,
-            userId: userId,
-          },
-        });
-        createAlarm.then((data) => {
-          res.json(data).status(200);
-        });
-      }
+      console.log("alarm on/off updated");
+      res.json(data).status(200);
+    });
+});
+router.post("/setDays", authenticateToken, function (req, res, next) {
+  const alarmDays = req.body.days;
+  const id = req.body.id;
+  prisma.alarmClock
+    .update({
+      where: {
+        id: id,
+      },
+      data: {
+        days: alarmDays,
+      },
+    })
+    .then((data) => {
+      console.log("alarm days updated");
+      res.json(data).status(200);
+    });
+});
+
+router.post("/setTime", authenticateToken, function (req, res, next) {
+  const alarm = req.body.time;
+  const id = req.body.id;
+  prisma.alarmClock
+    .update({
+      where: {
+        id: id,
+      },
+      data: {
+        time: alarm,
+      },
+    })
+    .then((data) => {
+      console.log("alarm time updated");
+      res.json(data).status(200);
     });
 });
 

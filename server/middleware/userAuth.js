@@ -1,8 +1,15 @@
 const jwt = require("jsonwebtoken");
 
 const authenticateToken = (req, res, next) => {
-  if (!req.headers.authorization) return res.sendStatus(401);
-  const token = req.headers.authorization.split(" ")[1];
+  var auth = "";
+  if (req.method == "POST") {
+    auth = req.body.headers.authorization;
+  } else {
+    auth = req.headers.authorization;
+  }
+
+  if (!auth) return res.sendStatus(401);
+  const token = auth.split(" ")[1];
   const secretKey = req.app.locals.secretKey;
   if (token) {
     jwt.verify(token, secretKey, (err, decoded) => {

@@ -20,7 +20,7 @@ var usersRouter = require("./routes/users");
 var levelRouter = require("./routes/api/V1/level");
 var jobsRouter = require("./routes/api/V1/jobs");
 var disseaseRouter = require("./routes/api/V1/dissease");
-var alarmRoutr = require("./routes/api/V1/AlarmClock");
+var alarmRouter = require("./routes/api/V1/AlarmClock");
 var app = express();
 app.locals.secretKey = process.env.SECRET_KEY;
 
@@ -47,7 +47,7 @@ app.use("/users", usersRouter);
 app.use("/api/v1/level", levelRouter);
 app.use("/api/v1/jobs", jobsRouter);
 app.use("/api/v1/dissease", disseaseRouter);
-app.use("/api/v1/alarm", alarmRoutr);
+app.use("/api/v1/alarm", alarmRouter);
 
 // disable cache
 app.disable("etag");

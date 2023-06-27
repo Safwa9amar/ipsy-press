@@ -57,8 +57,8 @@ router.post("/signup", function (req, res) {
   for (const [key, value] of Object.entries(form)) {
     if (!value) console.log(`${key}: ${value} is required`);
     if (key === "other") continue;
-    if (key === 'disability') continue;
-    if (!value) return res.statusMessage(`${key} is required`).status(400)
+    if (key === "disability") continue;
+    if (!value) return res.statusMessage(`${key} is required`).status(400);
   }
   console.log(form);
   // check if email already exists
@@ -102,6 +102,7 @@ router.post("/login", function (req, res) {
       },
     })
     .then((data) => {
+      console.log(data);
       if (!data) return res.status(401).json("Error: Email is incorrect");
       if (data.password !== form.password)
         return res.status(401).json("Error: Password is incorrect");
@@ -116,7 +117,10 @@ router.post("/login", function (req, res) {
         }
       );
       // console.log(token);
-      res.json({ token });
+      res.json({
+        token,
+        user: data
+      });
     });
 });
 
