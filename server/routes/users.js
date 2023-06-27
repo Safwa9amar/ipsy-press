@@ -47,7 +47,7 @@ router.post("/signup", function (req, res) {
     maritalStatus: req.body.maritalStatus,
     workPlace: req.body.workPlace,
     workSeniority: req.body.workSeniority,
-    disability: parseInt(req.body.disability) ? true : false,
+    disability: req.body.disability,
     other: req.body.other,
     createdAt: new Date(),
     updatedAt: new Date(),
@@ -55,9 +55,12 @@ router.post("/signup", function (req, res) {
   };
   // check if form is valid (all fields are required)
   for (const [key, value] of Object.entries(form)) {
-    if (!value) return res.status(400).json(`Error: ${key} is required`);
+    if (!value) console.log(`${key}: ${value} is required`);
+    if (key === "other") continue;
+    if (key === 'disability') continue;
+    if (!value) return res.statusMessage(`${key} is required`).status(400)
   }
-
+  console.log(form);
   // check if email already exists
   const user = prisma.user.findUnique({
     where: {
@@ -86,6 +89,7 @@ router.post("/signup", function (req, res) {
   });
 });
 router.post("/login", function (req, res) {
+  console.log(req.body);
   const secretKey = req.app.locals.secretKey;
   const form = {
     email: req.body.email,

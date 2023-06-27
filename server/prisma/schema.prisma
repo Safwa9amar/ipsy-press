@@ -31,20 +31,10 @@ model User {
   createdAt     DateTime  @default(now())
   updatedAt     DateTime  @updatedAt
   password      String
-
-  alarms   AlarmClock[]
-  score    Int?
-  diseaseID Int      @default(0)
-  disease  Disease      @relation(fields: [diseaseID], references: [id]) 
-}
-
-model AlarmClock {
-  id        Int      @id @default(autoincrement())
-  userId    Int
-  user      User     @relation(fields: [userId], references: [id])
-  time      DateTime
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
+  score         Int?
+  diseaseID     Int       @default(0)
+  disease       Disease   @relation(fields: [diseaseID], references: [id])
+  Alarm         AlarmClock[]
 }
 
 model Jobs {
@@ -207,4 +197,18 @@ model Disease {
   updatedAt DateTime @updatedAt
   // relation to user
   users     User[]
+}
+
+// alarm models
+model AlarmClock {
+  id        Int      @id @default(autoincrement())
+  title     String   @default("Alarm")
+  time      DateTime
+  days      String
+  isOn      Boolean
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  // relation to user
+  userId    Int
+  user      User     @relation(fields: [userId], references: [id])
 }

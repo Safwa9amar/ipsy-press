@@ -20,6 +20,7 @@ var usersRouter = require("./routes/users");
 var levelRouter = require("./routes/api/V1/level");
 var jobsRouter = require("./routes/api/V1/jobs");
 var disseaseRouter = require("./routes/api/V1/dissease");
+var alarmRoutr = require("./routes/api/V1/AlarmClock");
 var app = express();
 app.locals.secretKey = process.env.SECRET_KEY;
 
@@ -37,7 +38,7 @@ app.use(express.static(path.join(__dirname, "public")));
 
 // CORS
 const corsOption = {
-  origin: ["*", "http://192.168.244.67"],
+  origin: ["*", "http://192.168.1.3"],
 };
 app.use(cors(corsOption));
 
@@ -46,7 +47,10 @@ app.use("/users", usersRouter);
 app.use("/api/v1/level", levelRouter);
 app.use("/api/v1/jobs", jobsRouter);
 app.use("/api/v1/dissease", disseaseRouter);
+app.use("/api/v1/alarm", alarmRoutr);
 
+// disable cache
+app.disable("etag");
 
 // catch 404 and forward to error handler
 app.use(function (req, res, next) {
