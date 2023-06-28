@@ -28,6 +28,7 @@ export default function Connect() {
     }
     setIsLoading(true);
     const fetchData = async () => {
+      console.log("fetching data");
       try {
         const response = await axios.post(`${BASE_URL}users/login`, {
           email: email,

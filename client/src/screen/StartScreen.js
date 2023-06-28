@@ -3,12 +3,12 @@ import React, { useEffect } from "react";
 import { BASE_URL } from "@env";
 import axios from "axios";
 
-export default function StartScreen({ setIsLoading }) {
+export default function StartScreen({ setIsLoading,isLoading }) {
   useEffect(() => {
     axios.get(BASE_URL).then((res) => {
       res.status === 200 ? setIsLoading(false) : null;
     });
-  }, []);
+  }, [isLoading]);
   return (
     <View style={styles.container}>
       <Image source={require("../../assets/logo.png")} />

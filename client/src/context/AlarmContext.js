@@ -1,5 +1,4 @@
 import React, { createContext, useState, useEffect, useContext } from "react";
-import AsyncStorage from "@react-native-async-storage/async-storage";
 import axios from "axios";
 import { API_URL } from "@env";
 import { AuthContext } from "./AuthContext";
@@ -14,7 +13,7 @@ const AlarmProvider = ({ children }) => {
   const [isLoaded, setIsLoaded] = useState(false);
   const [error, setError] = useState(null);
 
-  const refresh =  (token, id) => {
+  const refresh = (token, id) => {
     axios
       .get(API_URL + "alarm/" + id, {
         headers: {
@@ -73,7 +72,12 @@ const AlarmProvider = ({ children }) => {
       });
   };
 
-
+  useEffect(() => {
+    initAlarm();
+    if (isLoggedIn && user) {
+      refresh(token, user?.id);
+    }
+  }, [isLoggedIn, user]);
 
   const initAlarm = () => {
     const [hours, minutes] = "10:22".split(":");

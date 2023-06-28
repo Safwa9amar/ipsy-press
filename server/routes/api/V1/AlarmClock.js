@@ -27,6 +27,20 @@ router.post("/", authenticateToken, function (req, res, next) {
   const alarmDays = req.body.days;
   const alarmOn = req.body.isOn;
   const id = req.body.id;
+  prisma.alarmClock
+    .findFirst({
+      where: {
+        userId: parseInt(red.body.id),
+      },
+    })
+    .then((data) => {
+      console.log(data);
+      if (data) {
+        console.log("alarm already exists");
+        res.json(data).status(200);
+      }
+    });
+
   const createAlarm = prisma.alarmClock.upsert({
     select: {
       user: true,
