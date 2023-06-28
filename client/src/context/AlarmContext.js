@@ -7,7 +7,7 @@ const AlarmContext = createContext();
 const AlarmProvider = ({ children }) => {
   const { user, token, isLoggedIn } = useContext(AuthContext);
   const [alarmId, setAlarmId] = useState(0);
-  const [alarm, setAlarm] = useState("");
+  const [alarm, setAlarm] = useState(null);
   const [alarmDays, setAlarmDays] = useState([]);
   const [alarmOn, setAlarmOn] = useState(false);
   const [isLoaded, setIsLoaded] = useState(false);
@@ -28,7 +28,10 @@ const AlarmProvider = ({ children }) => {
         setAlarmOn(data.isOn);
         setIsLoaded(true);
       })
-      .catch((err) => setError("une erreur sّ'est produite"));
+      .catch((err) => {
+        setError("une erreur sّ'est produite");
+        console.log("error " + err);
+      });
   };
 
   const handleAlarmChanges = (alarm) => {
@@ -73,13 +76,12 @@ const AlarmProvider = ({ children }) => {
   };
 
   useEffect(() => {
-    initAlarm();
-    if (isLoggedIn && user) {
-      refresh(token, user?.id);
+    if (isLoggedIn && user !== null) {
+      refresh(token, user.id);
     }
   }, [isLoggedIn, user]);
 
-  const initAlarm = () => {
+  const initAlarm = (token, id) => {
     const [hours, minutes] = "10:22".split(":");
     const toDay = new Date();
     const date = new Date(
@@ -89,27 +91,24 @@ const AlarmProvider = ({ children }) => {
       hours,
       minutes
     );
-    console.log(date);
     axios
       .post(API_URL + "alarm", {
         headers: {
           authorization: "Bearer " + token,
         },
-        id: user.id,
+        id: id,
         time: date,
         days: JSON.stringify(alarmDays),
         isOn: alarmOn,
       })
       .then(() => {
         console.log("alarm initialized");
+      })
+      .catch((err) => {
+        console.log(err);
       });
   };
 
-  useEffect(() => {
-    if (isLoggedIn && user) {
-      // initAlarm();
-    }
-  }, [isLoggedIn, user]);
   return (
     <AlarmContext.Provider
       value={{
@@ -122,6 +121,7 @@ const AlarmProvider = ({ children }) => {
         handleAlarmDaysChanges,
         handleAlarmOn,
         refresh,
+        initAlarm,
       }}
     >
       {children}

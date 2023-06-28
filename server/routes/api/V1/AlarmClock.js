@@ -27,42 +27,25 @@ router.post("/", authenticateToken, function (req, res, next) {
   const alarmDays = req.body.days;
   const alarmOn = req.body.isOn;
   const id = req.body.id;
+  console.log(alarm, alarmDays, alarmOn, id);
+
   prisma.alarmClock
-    .findFirst({
-      where: {
-        userId: parseInt(red.body.id),
+    .create({
+      data: {
+        time: alarm,
+        days: alarmDays,
+        isOn: alarmOn,
+        user: {
+          connect: {
+            id: parseInt(id),
+          },
+        },
       },
     })
     .then((data) => {
-      console.log(data);
-      if (data) {
-        console.log("alarm already exists");
-        res.json(data).status(200);
-      }
+      console.log("alarm created");
+      res.json(data).status(200);
     });
-
-  const createAlarm = prisma.alarmClock.upsert({
-    select: {
-      user: true,
-    },
-    where: {
-      id,
-    },
-    create: {
-      time: alarm,
-      days: alarmDays,
-      isOn: alarmOn,
-      user: {
-        connect: {
-          id: parseInt(id),
-        },
-      },
-    },
-    update: {},
-  });
-  createAlarm.then((data) => {
-    res.json(data).status(200);
-  });
 });
 
 router.post("/on", authenticateToken, function (req, res, next) {

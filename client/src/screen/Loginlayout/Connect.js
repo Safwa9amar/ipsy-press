@@ -7,9 +7,11 @@ import TextAlert from "../../components/TextAlert";
 import { BASE_URL } from "@env";
 import { useNavigation } from "@react-navigation/native";
 import { AuthContext } from "../../context/AuthContext";
+import { AlarmContext } from "../../context/AlarmContext";
 
 export default function Connect() {
   const userAuth = useContext(AuthContext);
+  const {initAlarm} = useContext(AlarmContext);
   const [translateXAnim] = useState(new Animated.Value(-400));
   const [fadeAnim] = useState(new Animated.Value(0));
   const [scaleAnim] = useState(new Animated.Value(0));
@@ -34,11 +36,13 @@ export default function Connect() {
           email: email,
           password: password,
         }); // Replace with your API endpoint
+        console.log(response.data);
         userAuth.login(response.data.token);
         userAuth.setUser(response.data.user);
         setIsLoading(false);
         setAlertType("success");
         setAlertMsg("Connexion réussie ✌✔ ");
+        initAlarm(response.data.token, response.data.user.id);
         setTimeout(() => {
           navigation.navigate("Home");
         }, 2000);

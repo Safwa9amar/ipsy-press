@@ -116,10 +116,25 @@ router.post("/login", function (req, res) {
           expiresIn: "1h",
         }
       );
-      // console.log(token);
+      // check if user set alaram
+      prisma.alarmClock
+        .findUnique({
+          select: {
+            user: true,
+          },
+          where: {
+            userID: data.id,
+          },
+        })
+        .then((alarm) => {
+          if (alarm) {
+            data.alarm = alarm;
+          }
+        });
+
       res.json({
         token,
-        user: data
+        user: data,
       });
     });
 });
