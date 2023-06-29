@@ -123,19 +123,26 @@ router.post("/login", function (req, res) {
             user: true,
           },
           where: {
-            userID: data.id,
+            id: data.id,
           },
         })
         .then((alarm) => {
           if (alarm) {
-            data.alarm = alarm;
+            console.log("with alarm", alarm);
+            res.json({
+              token,
+              user: data,
+              alarm: alarm,
+            });
+          } else {
+            console.log("no alarm");
+            res.json({
+              token,
+              user: data,
+              alarm: null,
+            });
           }
         });
-
-      res.json({
-        token,
-        user: data,
-      });
     });
 });
 

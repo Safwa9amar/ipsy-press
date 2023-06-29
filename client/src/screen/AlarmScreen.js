@@ -6,6 +6,8 @@ import {
   Switch,
   ScrollView,
   RefreshControl,
+  ImageBackground,
+  Image,
 } from "react-native";
 import React, { useContext, useEffect, useState } from "react";
 import { DateTimePickerAndroid } from "@react-native-community/datetimepicker";
@@ -25,9 +27,13 @@ export default function AlarmScreen() {
   const alarm = useContext(AlarmContext);
   const { user, token, isLoggedIn } = useContext(AuthContext);
   const [days, setDays] = useState(alarm.alarmDays);
-  const onChange = (selectedDate) => {
-    const currentDate = selectedDate;
-    alarm.handleAlarmChanges(currentDate.toLocaleTimeString().slice(0, 5));
+
+  const onChange = (evnt) => {
+    console.log(evnt.nativeEvent.timestamp);
+    const currentDate = new Date(evnt.nativeEvent.timestamp);
+    // change to local time
+    currentDate.setHours(currentDate.getHours() + 1);
+    alarm.handleAlarmChanges(currentDate);
   };
 
   const showTimepicker = () => {
@@ -38,17 +44,33 @@ export default function AlarmScreen() {
       is24Hour: true,
     });
   };
+  const handleDaysChanges = (id) => {
+    let days = alarm.alarmDays;
+    if (days.includes(id)) {
+      setDays(days.filter((item) => item !== id));
+    } else {
+      setDays([...days, id]);
+    }
+  };
+
   useEffect(() => {
     if (isLoggedIn) {
       alarm.refresh(token, user.id);
     }
   }, [isLoggedIn, user]);
 
+  useEffect(() => {
+    console.log("check days " + days);
+    // check if days data is loaded
+    if (alarm.isLoaded) {
+      alarm.handleAlarmDaysChanges(days);
+    }
+  }, [days]);
   return (
     <ScrollView
       contentContainerStyle={{
         ...styles.container,
-        backgroundColor: alarm.alarmOn ? "#ABE" : "#fff",
+        backgroundColor: alarm.alarmOn ? "#a7d3e0" : "#fff",
         paddingVertical: "100%",
         paddingTop: 100,
       }}
@@ -81,17 +103,15 @@ export default function AlarmScreen() {
                 <TouchableOpacity
                   key={item.id}
                   style={
-                    days.includes(item.id)
-                      ? { ...styles.dayContainerItem, backgroundColor: "#AFC" }
+                    alarm.alarmDays.includes(item.id)
+                      ? {
+                          ...styles.dayContainerItem,
+                          backgroundColor: "#AFC",
+                        }
                       : styles.dayContainerItem
                   }
                   onPress={() => {
-                    if (days.includes(item.id)) {
-                      setDays(days.filter((day) => day !== item.id));
-                    } else {
-                      setDays([...days, item.id]);
-                    }
-                    alarm.handleAlarmDaysChanges(days);
+                    handleDaysChanges(item.id);
                   }}
                 >
                   <Text>{item.day}</Text>
@@ -100,6 +120,14 @@ export default function AlarmScreen() {
             })}
           </View>
           <ClockSwitch alarm={alarm} />
+          {alarm.alarmOn && (
+            <Image
+              source={{
+                uri: "https://i.pinimg.com/736x/87/e5/23/87e523c5ecd72a5bbf52c4aff37c8ff1.jpg",
+              }}
+              style={{ width: 200, height: 200 }}
+            />
+          )}
         </View>
       ) : (
         <View
@@ -159,8 +187,8 @@ const styles = StyleSheet.create({
     width: 200,
     height: 200,
     borderRadius: 100,
-    borderColor: "blue",
-    borderStyle: "dotted",
+    borderColor: "yellow",
+    // borderStyle: "dotted",
     borderWidth: 5,
     flexDirection: "column",
     justifyContent: "center",

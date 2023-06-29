@@ -1,19 +1,41 @@
-import { ActivityIndicator, Image, StyleSheet, Text, View } from "react-native";
+import {
+  ActivityIndicator,
+  Image,
+  RefreshControl,
+  ScrollView,
+  StyleSheet,
+  Text,
+  View,
+} from "react-native";
 import React, { useEffect } from "react";
 import { BASE_URL } from "@env";
 import axios from "axios";
 
-export default function StartScreen({ setIsLoading,isLoading }) {
-  useEffect(() => {
+export default function StartScreen({ setIsLoading, isLoading }) {
+  const checkServer = () => {
     axios.get(BASE_URL).then((res) => {
       res.status === 200 ? setIsLoading(false) : null;
     });
+  };
+  useEffect(() => {
+    checkServer();
   }, [isLoading]);
   return (
-    <View style={styles.container}>
+    <ScrollView
+      contentContainerStyle={{
+        ...styles.container,
+      }}
+      refreshControl={
+        <RefreshControl
+          onRefresh={() => {
+            checkServer();
+          }}
+        />
+      }
+    >
       <Image source={require("../../assets/logo.png")} />
       <ActivityIndicator size="large" color="#0000ff" />
-    </View>
+    </ScrollView>
   );
 }
 const styles = StyleSheet.create({

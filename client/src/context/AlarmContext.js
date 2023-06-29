@@ -23,6 +23,7 @@ const AlarmProvider = ({ children }) => {
       .then((res) => res.data)
       .then((data) => {
         setAlarmId(data.id);
+        console.log(data.time);
         setAlarm(data.time.slice(11, 16));
         setAlarmDays(JSON.parse(data.days));
         setAlarmOn(data.isOn);
@@ -35,7 +36,7 @@ const AlarmProvider = ({ children }) => {
   };
 
   const handleAlarmChanges = (alarm) => {
-    console.log(alarm);
+    // console.log(alarm);
     axios
       .post(API_URL + "alarm/setTime", {
         headers: {
@@ -44,11 +45,16 @@ const AlarmProvider = ({ children }) => {
         id: alarmId,
         time: alarm,
       })
-      .then(() => {
-        setAlarm(alarm);
+      .finally(() => {
+        // setAlarm(alarm.slice(11, 16));
+        refresh(token, user.id);
       });
   };
   const handleAlarmDaysChanges = (days) => {
+    console.log(days);
+    days = days.sort((a, b) => {
+      return a - b;
+    });
     axios
       .post(API_URL + "alarm/setDays", {
         headers: {
@@ -108,6 +114,7 @@ const AlarmProvider = ({ children }) => {
         console.log(err);
       });
   };
+
 
   return (
     <AlarmContext.Provider

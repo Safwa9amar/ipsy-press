@@ -11,7 +11,7 @@ import { AlarmContext } from "../../context/AlarmContext";
 
 export default function Connect() {
   const userAuth = useContext(AuthContext);
-  const {initAlarm} = useContext(AlarmContext);
+  const { initAlarm } = useContext(AlarmContext);
   const [translateXAnim] = useState(new Animated.Value(-400));
   const [fadeAnim] = useState(new Animated.Value(0));
   const [scaleAnim] = useState(new Animated.Value(0));
@@ -30,19 +30,20 @@ export default function Connect() {
     }
     setIsLoading(true);
     const fetchData = async () => {
-      console.log("fetching data");
+      console.log("fetching data", BASE_URL);
       try {
         const response = await axios.post(`${BASE_URL}users/login`, {
           email: email,
           password: password,
         }); // Replace with your API endpoint
-        console.log(response.data);
         userAuth.login(response.data.token);
         userAuth.setUser(response.data.user);
         setIsLoading(false);
         setAlertType("success");
         setAlertMsg("Connexion réussie ✌✔ ");
-        initAlarm(response.data.token, response.data.user.id);
+        if (response.data.user.alarm === null) {
+          initAlarm(response.data.token, response.data.user.id);
+        }
         setTimeout(() => {
           navigation.navigate("Home");
         }, 2000);
