@@ -1,21 +1,15 @@
 import { View, Text, StyleSheet, Image, TouchableOpacity } from "react-native";
 import Ionicons from "@expo/vector-icons/Ionicons";
 import React from "react";
-import { useNavigation } from "@react-navigation/native";
+import { useNavigation, useRoute } from "@react-navigation/native";
 
 export default function Header() {
   const navigation = useNavigation();
+  const route = useRoute();
   return (
     <View style={styles.container}>
-      <Text style={styles.title}>Aujourd'hui</Text>
+      <Text style={styles.title}>{route.name}</Text>
       <View style={styles.rightContainer}>
-        <TouchableOpacity
-          onPress={() => {
-            navigation.navigate("Notification");
-          }}
-        >
-          <Ionicons name="notifications-outline" size={32} color="#D77A68" />
-        </TouchableOpacity>
         <TouchableOpacity
           onPress={() => {
             navigation.navigate("Profile");
@@ -54,6 +48,5 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     justifyContent: "space-between",
     alignItems: "center",
-    width: 80,
   },
 });

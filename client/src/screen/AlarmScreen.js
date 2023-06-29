@@ -42,6 +42,12 @@ export default function AlarmScreen() {
       onChange,
       mode: "time",
       is24Hour: true,
+      // from 6 am to 10 pm
+      minTime: new Date().setHours(6, 0, 0),
+      maxTime: new Date().setHours(22, 0, 0),
+      // 30 min interval
+      minuteInterval: 30,
+
     });
   };
   const handleDaysChanges = (id) => {

@@ -63,8 +63,8 @@ export default function Login() {
             <Text>
               <Text style={{ color: "#D57A68" }}>Mot de passe oublié ?</Text>
             </Text>
-            <Divider text="Connectez avec" />
-            <View
+            {/* <Divider text="Connectez avec" /> */}
+            {/* <View
               style={{ flexDirection: "row", alignItems: "center", gap: 10 }}
             >
               <TouchableOpacity>
@@ -74,8 +74,8 @@ export default function Login() {
                 <Image
                   source={require("../../assets/flat-color-icons_google.png")}
                 />
-              </TouchableOpacity>
-            </View>
+              </TouchableOpacity>r
+            </View> */}
           </View>
           <Text
             style={{

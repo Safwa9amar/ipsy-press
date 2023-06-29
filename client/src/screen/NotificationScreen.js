@@ -1,10 +1,20 @@
-import { View, Text } from 'react-native'
-import React from 'react'
+import { View, Text, StyleSheet } from "react-native";
+import React from "react";
 
 export default function NotificationScreen() {
   return (
-    <View>
-      <Text>NotificationScreen</Text>
+    <View style={styles.container}>
+      <Text>il n'y a pas de notification pour le moment,</Text>
+      <Text>veuillez revenir plus tard</Text>
     </View>
-  )
+  );
 }
+
+
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    justifyContent: "center",
+    alignItems: "center",
+  },
+});

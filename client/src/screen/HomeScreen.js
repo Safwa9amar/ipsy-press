@@ -3,6 +3,7 @@ import React, { useContext, useEffect, useState } from "react";
 import { useNavigation } from "@react-navigation/native";
 import { AuthContext } from "../context/AuthContext";
 import AlarmScreen from "./AlarmScreen";
+import ProfileScreen from "./ProfileScreen";
 
 export default function Home() {
   const userAuth = useContext(AuthContext);
@@ -10,18 +11,18 @@ export default function Home() {
   useEffect(() => {}, []);
 
   return (
-    <AlarmScreen />
-    // <View style={styles.container}>
+   
+    <View style={styles.container}>
 
-    //   <Text>Home</Text>
-    //   <TouchableOpacity
-    //     onPress={async () => {
-    //       userAuth.logout();
-    //     }}
-    //   >
-    //     <Text>Logout</Text>
-    //   </TouchableOpacity>
-    // </View>
+      <Text>Home</Text>
+      <TouchableOpacity
+        onPress={async () => {
+          userAuth.logout();
+        }}
+      >
+        <Text>Logout</Text>
+      </TouchableOpacity>
+    </View>
   );
 }
 

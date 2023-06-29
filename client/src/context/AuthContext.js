@@ -7,7 +7,7 @@ const AuthProvider = ({ children }) => {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [user, setUser] = useState(null);
   const [token, setToken] = useState();
-
+  const [isExpired, setIsExpired] = useState(false);
   // Saving the token
   const saveToken = async (token) => {
     try {
