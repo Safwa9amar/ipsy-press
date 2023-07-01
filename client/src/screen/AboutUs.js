@@ -1,10 +1,7 @@
 import {
-  View,
   Text,
   StyleSheet,
   ScrollView,
-  FlatList,
-  SafeAreaView,
 } from "react-native";
 import React from "react";
 export default function AboutUs() {

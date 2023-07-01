@@ -4,8 +4,6 @@ import {
   RefreshControl,
   ScrollView,
   StyleSheet,
-  Text,
-  View,
 } from "react-native";
 import React, { useEffect } from "react";
 import { BASE_URL } from "@env";

@@ -1,13 +1,15 @@
-import React, { createContext, useState, useEffect, useContext } from "react";
+import React, { createContext, useState, useEffect } from "react";
 import AsyncStorage from "@react-native-async-storage/async-storage";
+import { useNavigation } from "@react-navigation/native";
 
 const AuthContext = createContext();
 
 const AuthProvider = ({ children }) => {
+  const navigation = useNavigation();
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [user, setUser] = useState(null);
   const [token, setToken] = useState();
-  const [isExpired, setIsExpired] = useState(false);
+  // const [isExpired, setIsExpired] = useState(false);
   // Saving the token
   const saveToken = async (token) => {
     try {
@@ -35,7 +37,12 @@ const AuthProvider = ({ children }) => {
       }
     });
   }, []);
-
+  useEffect(() => {
+    if (!isLoggedIn && user == null) {
+      // navigation.navigate("Home");
+      navigation.navigate("Login");
+    }
+  }, [isLoggedIn, user]);
   const login = async (loginToken) => {
     if (loginToken !== null) {
       saveToken(loginToken);
@@ -45,12 +52,32 @@ const AuthProvider = ({ children }) => {
   };
 
   const logout = async () => {
-    AsyncStorage.removeItem("token");
-    if ((await checkToken()) === null) setIsLoggedIn(false);
+    getToken().then((token) => {
+      if (token !== null) {
+        console.log("start logout");
+        AsyncStorage.removeItem("token");
+        setIsLoggedIn(false);
+        setToken(null);
+        setUser(null);
+        navigation.navigate("Login");
+        console.log("end logout");
+      }
+    });
+  
   };
 
   return (
-    <AuthContext.Provider value={{ user,token, setUser, isLoggedIn, login, logout }}>
+    <AuthContext.Provider
+      value={{
+        user,
+        token,
+        isLoggedIn,
+        setUser,
+        login,
+        logout,
+        getToken,
+      }}
+    >
       {children}
     </AuthContext.Provider>
   );

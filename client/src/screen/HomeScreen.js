@@ -1,37 +1,61 @@
-import { View, Text, StyleSheet, TouchableOpacity } from "react-native";
-import React, { useContext, useEffect, useState } from "react";
-import { useNavigation } from "@react-navigation/native";
-import { AuthContext } from "../context/AuthContext";
-import AlarmScreen from "./AlarmScreen";
-import ProfileScreen from "./ProfileScreen";
+import { StyleSheet, ScrollView } from "react-native";
+import Layoutindex from "./HomeLayout";
+import { createStackNavigator } from "@react-navigation/stack";
+import LevelLayout from "./HomeLayout/LevelLayout";
+import SubLevelLayout from "./HomeLayout/SubLevelLayout";
+import SubSubLevelLayout from "./HomeLayout/SubSubLevelLayout";
+import FinalLayout from "./HomeLayout/FinalLayout";
+import Exercice from "./HomeLayout/ExerciceScreen";
 
+const HomeNavigator = createStackNavigator();
 export default function Home() {
-  const userAuth = useContext(AuthContext);
-
-  useEffect(() => {}, []);
-
   return (
-   
-    <View style={styles.container}>
+    <>
+      <HomeNavigator.Navigator initialRouteName="indexLevels">
+        <HomeNavigator.Screen
+          name="Level"
+          component={LevelLayout}
+          options={{
+            headerShown: false,
+          }}
+        />
+        <HomeNavigator.Screen
+          name="SubLevel"
+          component={SubLevelLayout}
+          options={{
+            headerShown: false,
+          }}
+        />
+        <HomeNavigator.Screen
+          name="SubSubLevel"
+          component={SubSubLevelLayout}
+          options={{
+            headerShown: false,
+          }}
+        />
+        <HomeNavigator.Screen
+          name="FinalLevel"
+          component={FinalLayout}
+          options={{
+            headerShown: false,
+          }}
+        />
+        <HomeNavigator.Screen
+          name="Exercice"
+          component={Exercice}
+          options={{
+            headerShown: false,
+          }}
+        />
 
-      <Text>Home</Text>
-      <TouchableOpacity
-        onPress={async () => {
-          userAuth.logout();
-        }}
-      >
-        <Text>Logout</Text>
-      </TouchableOpacity>
-    </View>
+        <HomeNavigator.Screen
+          name="indexLevels"
+          component={Layoutindex}
+          options={{
+            headerShown: false,
+          }}
+        />
+      </HomeNavigator.Navigator>
+    </>
   );
 }
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    gap: 10,
-    backgroundColor: "FFF3EE",
-    alignItems: "center",
-    justifyContent: "center",
-  },
-});

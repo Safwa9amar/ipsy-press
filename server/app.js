@@ -49,9 +49,6 @@ app.use("/api/v1/jobs", jobsRouter);
 app.use("/api/v1/dissease", disseaseRouter);
 app.use("/api/v1/alarm", alarmRouter);
 
-// disable cache
-app.disable("etag");
-
 // catch 404 and forward to error handler
 app.use(function (req, res, next) {
   next(createError(404));

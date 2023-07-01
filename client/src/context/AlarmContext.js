@@ -23,7 +23,6 @@ const AlarmProvider = ({ children }) => {
       .then((res) => res.data)
       .then((data) => {
         setAlarmId(data.id);
-        console.log(data.time);
         setAlarm(data.time.slice(11, 16));
         setAlarmDays(JSON.parse(data.days));
         setAlarmOn(data.isOn);
@@ -51,7 +50,6 @@ const AlarmProvider = ({ children }) => {
       });
   };
   const handleAlarmDaysChanges = (days) => {
-    console.log(days);
     days = days.sort((a, b) => {
       return a - b;
     });
@@ -114,7 +112,6 @@ const AlarmProvider = ({ children }) => {
         console.log(err);
       });
   };
-
 
   return (
     <AlarmContext.Provider

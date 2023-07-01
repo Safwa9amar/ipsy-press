@@ -6,7 +6,6 @@ import {
   Switch,
   ScrollView,
   RefreshControl,
-  ImageBackground,
   Image,
 } from "react-native";
 import React, { useContext, useEffect, useState } from "react";
@@ -29,7 +28,6 @@ export default function AlarmScreen() {
   const [days, setDays] = useState(alarm.alarmDays);
 
   const onChange = (evnt) => {
-    console.log(evnt.nativeEvent.timestamp);
     const currentDate = new Date(evnt.nativeEvent.timestamp);
     // change to local time
     currentDate.setHours(currentDate.getHours() + 1);
@@ -42,12 +40,6 @@ export default function AlarmScreen() {
       onChange,
       mode: "time",
       is24Hour: true,
-      // from 6 am to 10 pm
-      minTime: new Date().setHours(6, 0, 0),
-      maxTime: new Date().setHours(22, 0, 0),
-      // 30 min interval
-      minuteInterval: 30,
-
     });
   };
   const handleDaysChanges = (id) => {
@@ -60,13 +52,12 @@ export default function AlarmScreen() {
   };
 
   useEffect(() => {
-    if (isLoggedIn) {
+    if (isLoggedIn && user !== null) {
       alarm.refresh(token, user.id);
     }
   }, [isLoggedIn, user]);
 
   useEffect(() => {
-    console.log("check days " + days);
     // check if days data is loaded
     if (alarm.isLoaded) {
       alarm.handleAlarmDaysChanges(days);

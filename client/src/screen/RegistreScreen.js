@@ -5,7 +5,7 @@ import {
   ScrollView,
   ActivityIndicator,
 } from "react-native";
-import React, { useContext, useEffect, useMemo, useState } from "react";
+import React, { useEffect, useMemo, useState } from "react";
 import RNDateTimePicker from "@react-native-community/datetimepicker";
 import InputText from "../components/InputText";
 import { Picker } from "@react-native-picker/picker";
@@ -15,8 +15,10 @@ import axios from "axios";
 import TextAlert from "../components/TextAlert";
 import RadioGroup from "react-native-radio-buttons-group";
 import EmailValidate from "../helpers/EmailValidate";
+import { useNavigation } from "@react-navigation/native";
 
 export default function Registre() {
+  const navigation = useNavigation();
   const [date, setDate] = React.useState(new Date(1598051730000));
   const [isSelectingDate, setIsSelectingDate] = useState(false);
   const [jobs, setJobs] = useState([]);
@@ -467,6 +469,7 @@ export default function Registre() {
           <TouchableOpacity
             onPress={() => {
               setUserData({});
+              navigation.navigate("Login");
             }}
             style={{
               alignSelf: "flex-end",

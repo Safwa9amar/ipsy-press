@@ -33,6 +33,20 @@ function NavigationTab() {
             // set icon
             tabBarIcon: ({ focused }) => (
               <Ionicons
+                name="home-outline"
+                size={24}
+                color={focused ? "#D77A68" : "#748c94"}
+              />
+            ),
+          }}
+          name="Home"
+          component={Home}
+        />
+        <Tab.Screen
+          options={{
+            // set icon
+            tabBarIcon: ({ focused }) => (
+              <Ionicons
                 name="alarm-outline"
                 size={24}
                 color={focused ? "#D77A68" : "#748c94"}
@@ -57,20 +71,7 @@ function NavigationTab() {
           name="Profile"
           component={ProfileScreen}
         />
-        <Tab.Screen
-          options={{
-            // set icon
-            tabBarIcon: ({ focused }) => (
-              <Ionicons
-                name="home-outline"
-                size={24}
-                color={focused ? "#D77A68" : "#748c94"}
-              />
-            ),
-          }}
-          name="Home"
-          component={Home}
-        />
+
         <Tab.Screen
           name="About Us"
           component={AboutUs}

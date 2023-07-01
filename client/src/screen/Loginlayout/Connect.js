@@ -46,6 +46,7 @@ export default function Connect() {
         }
         setTimeout(() => {
           navigation.navigate("Home");
+          setAlertMsg("");
         }, 2000);
       } catch (error) {
         setIsLoading(false);
@@ -179,6 +180,19 @@ export default function Connect() {
           >
             Mot de passe oublié ?
           </Text>
+          <TouchableOpacity
+            onPress={() => {
+              navigation.navigate("Sign-up");
+            }}
+          >
+            <Text
+              style={{
+                marginTop: 20,
+              }}
+            >
+              Pas encore de compte ? Inscrivez-vous
+            </Text>
+          </TouchableOpacity>
           <TextAlert type={alertType} message={alertMsg} />
         </View>
         <View

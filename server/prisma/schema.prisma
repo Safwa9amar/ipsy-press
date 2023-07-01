@@ -50,6 +50,9 @@ model Level {
   id            Int        @id @default(autoincrement())
   name          String
   status        Boolean    @default(false)
+  subTitlte     String     @default("")
+  description   String     @default("")
+  image         String     @default("")
   requiredScore Int        @default(0)
   createdAt     DateTime   @default(now())
   updatedAt     DateTime   @updatedAt
@@ -60,6 +63,9 @@ model Level {
 model subLevel {
   id            Int           @id @default(autoincrement())
   name          String
+  subTitlte     String        @default("")
+  description   String        @default("")
+  image         String        @default("")
   status        Boolean       @default(false)
   requiredScore Int           @default(10)
   createdAt     DateTime      @default(now())
@@ -76,6 +82,9 @@ model subLevel {
 model subSubLevel {
   id            Int          @id @default(autoincrement())
   name          String
+  subTitlte     String       @default("")
+  description   String       @default("")
+  image         String       @default("")
   status        Boolean      @default(false)
   requiredScore Int          @default(15)
   createdAt     DateTime     @default(now())
@@ -92,6 +101,9 @@ model subSubLevel {
 model finalLevel {
   id            Int         @id @default(autoincrement())
   name          String
+  subTitlte     String      @default("")
+  description   String      @default("")
+  image         String      @default("")
   status        Boolean     @default(false)
   requiredScore Int         @default(20)
   createdAt     DateTime    @default(now())
@@ -161,6 +173,7 @@ enum selectQuestion {
   Vocal
   Written
   Visual
+  Radio
 }
 
 model Advice {

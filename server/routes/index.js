@@ -12,7 +12,6 @@ router.get("/", function (req, res, next) {
       { name: "Fiat", models: ["500", "Panda"] },
     ],
   };
-  console.log("hello from server");
   res.json(json);
 });
 

@@ -1,9 +1,11 @@
-import { View, Text, StyleSheet, TouchableOpacity, Image } from "react-native";
-import React from "react";
+import { View, Text, StyleSheet, TouchableOpacity } from "react-native";
+import React, { useContext } from "react";
 import Ionicons from "@expo/vector-icons/Ionicons";
 import { useNavigation } from "@react-navigation/native";
+import { AuthContext } from "../context/AuthContext";
 export default function SettingScreen() {
   const navigation = useNavigation();
+  const auth = useContext(AuthContext);
   return (
     <View style={styles.container}>
       <NavItem icon="person-outline" text="Profil et compte" />
@@ -19,11 +21,13 @@ export default function SettingScreen() {
         onPress={() => {
           navigation.navigate("Setting");
         }}
-      icon="settings-outline" text="Paramètres" />
+        icon="settings-outline"
+        text="Paramètres"
+      />
       {/* deconnection */}
-      <NavItem  
+      <NavItem
         onPress={() => {
-          navigation.navigate("");
+          auth.logout();
         }}
         icon="log-out-outline"
         text="Déconnexion"
@@ -34,12 +38,6 @@ export default function SettingScreen() {
         }}
         icon="information-circle-outline"
         text="À propos"
-      />
-      <Image 
-      style={{
-        marginTop: 40,
-      }}
-        source={require("../../assets/logo.png")}
       />
     </View>
   );
@@ -85,4 +83,3 @@ const styles = StyleSheet.create({
     borderRadius: 5,
   },
 });
-

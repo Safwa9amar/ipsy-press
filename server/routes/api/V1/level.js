@@ -9,6 +9,9 @@ router.get("/", function (req, res, next) {
     select: {
       id: true,
       name: true,
+      description: true,
+      subTitlte: true,
+      image: true,
       status: true,
       requiredScore: true,
       exercises: {
@@ -40,6 +43,9 @@ router.get("/", function (req, res, next) {
         select: {
           id: true,
           name: true,
+          description: true,
+          subTitlte: true,
+          image: true,
           status: true,
           requiredScore: true,
           exercises: {
@@ -72,6 +78,9 @@ router.get("/", function (req, res, next) {
             select: {
               id: true,
               name: true,
+              description: true,
+              subTitlte: true,
+              image: true,
               status: true,
               requiredScore: true,
               exercises: true,

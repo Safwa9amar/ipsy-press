@@ -1,9 +1,6 @@
-import { View, Text, StyleSheet, TouchableOpacity, Image } from "react-native";
+import { View, Text, StyleSheet } from "react-native";
 import React from "react";
-import Ionicons from "@expo/vector-icons/Ionicons";
-import { useNavigation } from "@react-navigation/native";
 export default function ProfileScreen() {
-  const navigation = useNavigation();
   return (
     <View style={styles.container}>
       <Text>profile</Text>
