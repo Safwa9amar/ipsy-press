@@ -1,7 +1,6 @@
 import { View, Text, Image, StyleSheet, TouchableOpacity } from "react-native";
 import React, { useContext, useEffect, useState } from "react";
 import MyButton from "../components/MyButton";
-// import Divider from "../components/Divider";
 import Connect from "./Loginlayout/Connect";
 import { useNavigation } from "@react-navigation/native";
 import { AuthContext } from "../context/AuthContext";
@@ -14,6 +13,7 @@ export default function Login() {
     setlogin(true);
   };
   useEffect(() => {
+    if (userAuth === undefined) return;
     if (userAuth.user !== null) {
       navigation.navigate("Home");
     }

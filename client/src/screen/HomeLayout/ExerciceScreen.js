@@ -95,6 +95,7 @@ export default function Exercice({ route }) {
             />
           );
         })}
+ 
     </ScrollView>
   );
 }

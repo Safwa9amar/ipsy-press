@@ -1,4 +1,3 @@
-import { StyleSheet, ScrollView } from "react-native";
 import Layoutindex from "./HomeLayout";
 import { createStackNavigator } from "@react-navigation/stack";
 import LevelLayout from "./HomeLayout/LevelLayout";
@@ -7,9 +6,6 @@ import SubSubLevelLayout from "./HomeLayout/SubSubLevelLayout";
 import FinalLayout from "./HomeLayout/FinalLayout";
 import Exercice from "./HomeLayout/ExerciceScreen";
 import FoodScreen from "./HomeLayout/FoodScreen";
-import { useNavigation } from "@react-navigation/native";
-import { useContext, useEffect } from "react";
-import { AuthContext } from "../context/AuthContext";
 
 const HomeNavigator = createStackNavigator();
 

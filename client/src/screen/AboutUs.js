@@ -3,7 +3,6 @@ import {
   StyleSheet,
   ScrollView,
 } from "react-native";
-import React from "react";
 export default function AboutUs() {
   let data = [
     "Exercices de relaxation : Ipsy Press propose une bibliothèque d'exercices de relaxation conçus pour vous aider à vous détendre et à réduire le stress accumulé pendant les heures de travail. Des techniques de respiration profonde, des séances de méditation guidées et des exercices de gestion du stress vous permettront de trouver un moment de calme et de tranquillité, même au milieu de l'agitation professionnelle.",

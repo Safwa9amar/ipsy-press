@@ -8,9 +8,11 @@ import {
 import React, { useContext } from "react";
 import { AuthContext } from "../context/AuthContext";
 import { Ionicons } from "@expo/vector-icons";
+import { useNavigation } from "@react-navigation/native";
 
 export default function ProfileScreen() {
   const { user } = useContext(AuthContext);
+  if (user === undefined) return null;
   return (
     <ScrollView contentContainerStyle={styles.container}>
       <ProfileItem title="Nom" value={user.firstName} />
@@ -24,16 +26,11 @@ export default function ProfileScreen() {
 }
 
 const ProfileItem = ({ title, value }) => {
-  
   return (
     <View style={styles.profileItem}>
       <View style={styles.profileItemHeader}>
         <Text style={styles.profileItemTitle}>{title}</Text>
-        <TouchableOpacity
-          onPress={() => {
-
-          }}
-        >
+        <TouchableOpacity onPress={() => {}}>
           <Ionicons
             style={styles.profileItemIcon}
             name="pencil-sharp"
@@ -43,7 +40,6 @@ const ProfileItem = ({ title, value }) => {
         </TouchableOpacity>
       </View>
       <Text style={styles.profileItemValue}>{value}</Text>
-     
     </View>
   );
 };

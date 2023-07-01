@@ -34,7 +34,7 @@ export default function Registre() {
     lastName: "",
     sex: "male",
     birthDate: "",
-    maritalStatus: "",
+    maritalStatus: "celibataire ",
     adress: "",
     email: "",
     phone: "",
@@ -43,7 +43,7 @@ export default function Registre() {
     workPlace: "",
     other: "/",
     disability: disability,
-    diseaseID: "",
+    diseaseID: dissease,
     password: "",
     confirmPassword: "",
   });

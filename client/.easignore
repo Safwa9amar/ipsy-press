@@ -1,0 +1,11 @@
+# Exclude files generated during the build process
+.expo
+.git
+.gitignore
+node_modules
+
+# Exclude build artifacts
+android
+ios
+videos
+mp4
