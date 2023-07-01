@@ -113,7 +113,9 @@ model finalLevel {
   subSubLevel   subSubLevel @relation(fields: [subSubLevelId], references: [id])
   // relation to exercise
   exercises     exercise[]
-}
+  // relation to food
+  foods         Food[]
+  }
 
 model exercise {
   id           Int         @id @default(autoincrement())
@@ -201,6 +203,10 @@ model Food {
   description String
   createdAt   DateTime @default(now())
   updatedAt   DateTime @updatedAt
+  // relation to finalLevel
+  finalLevelId Int
+  finalLevel   finalLevel @relation(fields: [finalLevelId], references: [id])
+  
 }
 
 model Disease {

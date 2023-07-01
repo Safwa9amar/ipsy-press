@@ -331,17 +331,7 @@ const VoiceAnswer = ({ idx }) => {
 
     console.log("Recording stopped and stored at", uri);
   }
-  async function playSound() {
-    console.log("Loading Sound", recording);
-    return;
 
-    const { sound } = await Audio.Sound.createAsync(recording.getURI());
-
-    setSound(sound);
-
-    console.log("Playing Sound");
-    await sound.playAsync();
-  }
   const pulse = useRef(new Animated.Value(1)).current;
 
   useEffect(() => {
@@ -367,13 +357,21 @@ const VoiceAnswer = ({ idx }) => {
         flexDirection: "row",
         alignItems: "center",
         paddingVertical: 15,
-        margin : 50
+        margin: 50,
       }}
     >
       <TouchableOpacity
         onPress={() => {
-          setIsRecording(!isRecording);
-          isRecording ? startRecording() : stopRecording();
+          requestPermission().then(() => {
+            if (permissionResponse.granted) {
+              if (isRecording) {
+                stopRecording();
+              } else {
+                startRecording();
+              }
+              setIsRecording(!isRecording);
+            }
+          });
         }}
         style={{
           width: 100,
@@ -382,7 +380,7 @@ const VoiceAnswer = ({ idx }) => {
           justifyContent: "center",
           alignItems: "center",
           // add animation
-          transform: !isRecording ? [{ scale: pulse }] : [{ scale: 1 }],
+          transform: isRecording ? [{ scale: pulse }] : [{ scale: 1 }],
           backgroundColor: isRecording ? "#FF000088" : "#FF0000",
         }}
       >

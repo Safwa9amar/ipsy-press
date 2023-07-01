@@ -8,8 +8,20 @@ export default function SettingScreen() {
   const auth = useContext(AuthContext);
   return (
     <View style={styles.container}>
-      <NavItem icon="person-outline" text="Profil et compte" />
-      <NavItem icon="notifications-outline" text="Notifications" />
+      <NavItem
+        onPress={() => {
+          navigation.navigate("Profile");
+        }}
+        icon="person-outline"
+        text="Profil et compte"
+      />
+      <NavItem
+        onPress={() => {
+          navigation.navigate("Notification");
+        }}
+        icon="notifications-outline"
+        text="Notifications"
+      />
       <NavItem
         onPress={() => {
           navigation.navigate("Alarm");

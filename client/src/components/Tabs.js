@@ -18,6 +18,9 @@ function NavigationTab() {
   return (
     <>
       <Tab.Navigator
+        backBehavior={
+          auth.user ? "history" : "Login" /* back button behavior */
+        }
         screenOptions={{
           tabBarStyle: {
             display: auth.user ? "flex" : "none",

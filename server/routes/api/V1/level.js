@@ -90,7 +90,17 @@ router.get("/", function (req, res, next) {
                   name: true,
                   status: true,
                   requiredScore: true,
+                  image: true,
                   exercises: true,
+                  // select all food wehre foodId = food.id
+                  foods: {
+                    select: {
+                      id: true,
+                      title: true,
+                      image: true,
+                      description: true,
+                    },
+                  },
                 },
               },
             },
