@@ -12,6 +12,7 @@ import React, { useContext, useEffect, useState } from "react";
 import { DateTimePickerAndroid } from "@react-native-community/datetimepicker";
 import { AlarmContext } from "../context/AlarmContext";
 import { AuthContext } from "../context/AuthContext";
+import fetchApi from "../helpers/fetchApi";
 
 export default function AlarmScreen() {
   const data = [

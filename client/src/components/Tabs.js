@@ -12,6 +12,7 @@ import AboutUs from "../screen/AboutUs";
 import { useContext, useEffect } from "react";
 import { AuthContext } from "../context/AuthContext";
 import fetchApi from "../helpers/fetchApi";
+
 const Tab = createBottomTabNavigator();
 
 function NavigationTab() {

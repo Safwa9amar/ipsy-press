@@ -175,7 +175,7 @@ export default function Registre() {
       .catch((err) => console.log(err));
   }, [API_URL]);
   useEffect(() => {
-    fetchApi("register");
+    fetchApi("/register");
   }, []);
   return (
     <ScrollView>

@@ -5,6 +5,9 @@ const authenticateToken = require("../../../middleware/userAuth");
 const prisma = new PrismaClient();
 /* GET users listing. */
 router.get("/", function (req, res, next) {
+  const url = req.protocol + "://" + req.get("host");
+  console.log(url);
+
   const levels = prisma.level.findMany({
     select: {
       id: true,

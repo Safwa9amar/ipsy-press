@@ -43,7 +43,7 @@ const AuthProvider = ({ children }) => {
   useEffect(() => {
     if (!isLoggedIn && user == null) {
       // navigation.navigate("Home");
-      navigation.navigate("Login");
+      // navigation.navigate("Login");
     }
   }, [isLoggedIn, user]);
   const login = async (loginToken) => {
@@ -62,7 +62,7 @@ const AuthProvider = ({ children }) => {
         setIsLoggedIn(false);
         setToken(null);
         setUser(null);
-        navigation.navigate("Login");
+        // navigation.navigate("Login");
         console.log("end logout");
       }
     });
