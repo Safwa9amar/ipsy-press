@@ -12,15 +12,19 @@ import { useNavigation } from "@react-navigation/native";
 
 export default function ProfileScreen() {
   const { user } = useContext(AuthContext);
-  if (user === undefined) return null;
+
   return (
     <ScrollView contentContainerStyle={styles.container}>
-      <ProfileItem title="Nom" value={user.firstName} />
-      <ProfileItem title="Prénom" value={user.lastName} />
-      <ProfileItem title="Email" value={user.email} />
-      <ProfileItem title="Téléphone" value={user.phone} />
-      <ProfileItem title="Adresse" value={user.adress} />
-      <ProfileItem title="mot de passe" value="********" />
+      {user !== null && (
+        <>
+          <ProfileItem title="Nom" value={user?.firstName} />
+          <ProfileItem title="Prénom" value={user?.lastName} />
+          <ProfileItem title="Email" value={user?.email} />
+          <ProfileItem title="Téléphone" value={user?.phone} />
+          <ProfileItem title="Adresse" value={user?.adress} />
+          <ProfileItem title="mot de passe" value="********" />
+        </>
+      )}
     </ScrollView>
   );
 }

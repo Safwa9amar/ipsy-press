@@ -22,7 +22,8 @@ router.get("/:id", authenticateToken, function (req, res, next) {
   });
 });
 
-router.post("/", authenticateToken, function (req, res, next) {
+router.post("/", function (req, res, next) {
+  console.log(req.body);
   const alarm = req.body.time;
   const alarmDays = req.body.days;
   const alarmOn = req.body.isOn;

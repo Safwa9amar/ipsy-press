@@ -65,9 +65,9 @@ export default function AlarmScreen() {
   }, [days]);
   return (
     <ScrollView
-      contentContainerStyle={{
+      styles={{
         ...styles.container,
-        backgroundColor: alarm.alarmOn ? "#a7d3e0" : "#fff",
+        backgroundColor: alarm.alarmOn ? "#AFC" : "#fff",
         paddingVertical: "100%",
         paddingTop: 100,
       }}
@@ -136,7 +136,32 @@ export default function AlarmScreen() {
           }}
         >
           {alarm.error ? (
-            <Text>"Assurez-vous que vous êtes connecté à Internet"</Text>
+            <TouchableOpacity
+              onPress={() => {
+                if (isLoggedIn) {
+                  alarm.refresh(token, user.id);
+                }
+              }}
+              style={{
+                backgroundColor: "#fff",
+                padding: 20,
+                borderRadius: 10,
+                shadowColor: "#000",
+                shadowOffset: {
+                  width: 0,
+                  height: 2,
+                },
+                shadowOpacity: 0.25,
+                shadowRadius: 3.84,
+              }}
+            >
+              <Text style={{ fontSize: 20, fontWeight: "bold" }}>
+                {alarm.error}
+              </Text>
+              <Text style={{ fontSize: 20, fontWeight: "bold" }}>
+                Tap to retry
+              </Text>
+            </TouchableOpacity>
           ) : (
             ""
           )}

@@ -1,8 +1,25 @@
-import React, { createContext, useState, useEffect, useContext } from "react";
+import React, {
+  createContext,
+  useState,
+  useEffect,
+  useContext,
+  useRef,
+} from "react";
 import axios from "axios";
 import { API_URL } from "@env";
 import { AuthContext } from "./AuthContext";
 const AlarmContext = createContext();
+
+import * as Device from "expo-device";
+import * as Notifications from "expo-notifications";
+
+Notifications.setNotificationHandler({
+  handleNotification: async () => ({
+    shouldShowAlert: true,
+    shouldPlaySound: false,
+    shouldSetBadge: false,
+  }),
+});
 
 const AlarmProvider = ({ children }) => {
   const { user, token, isLoggedIn } = useContext(AuthContext);
@@ -82,6 +99,7 @@ const AlarmProvider = ({ children }) => {
   useEffect(() => {
     if (isLoggedIn && user !== null) {
       refresh(token, user.id);
+      console.log("alarm refreshed");
     }
   }, [isLoggedIn, user]);
 
@@ -112,6 +130,29 @@ const AlarmProvider = ({ children }) => {
         console.log(err);
       });
   };
+  // watch for time to be with the alarm time and play the alarm
+  useEffect(() => {
+    if (alarmOn) {
+      const [hours, minutes] = alarm.split(":");
+      const toDay = new Date();
+      const date = new Date(
+        toDay.getFullYear(),
+        toDay.getMonth(),
+        toDay.getDate(),
+        hours,
+        minutes
+      );
+      const now = new Date();
+      const diff = date - now;
+      if (diff > 0) {
+        setTimeout(async () => {
+          refresh(token, user.id);
+          console.log("alarm");
+          await schedulePushNotification();
+        }, diff);
+      }
+    }
+  }, [alarmOn, alarm]);
 
   return (
     <AlarmContext.Provider
@@ -132,5 +173,49 @@ const AlarmProvider = ({ children }) => {
     </AlarmContext.Provider>
   );
 };
+
+async function schedulePushNotification() {
+  console.log("notification");
+  await Notifications.scheduleNotificationAsync({
+    content: {
+      title: "it's time to get relaxed",
+      body: "you can start your session now",
+    },
+    trigger: { seconds: 2 },
+  });
+}
+
+async function registerForPushNotificationsAsync() {
+  let token;
+
+  if (Platform.OS === "android") {
+    await Notifications.setNotificationChannelAsync("default", {
+      name: "default",
+      importance: Notifications.AndroidImportance.MAX,
+      vibrationPattern: [0, 250, 250, 250],
+      lightColor: "#FF231F7C",
+    });
+  }
+
+  if (Device.isDevice) {
+    const { status: existingStatus } =
+      await Notifications.getPermissionsAsync();
+    let finalStatus = existingStatus;
+    if (existingStatus !== "granted") {
+      const { status } = await Notifications.requestPermissionsAsync();
+      finalStatus = status;
+    }
+    if (finalStatus !== "granted") {
+      alert("Failed to get push token for push notification!");
+      return;
+    }
+    token = (await Notifications.getExpoPushTokenAsync()).data;
+    console.log(token);
+  } else {
+    alert("Must use physical device for Push Notifications");
+  }
+
+  return token;
+}
 
 export { AlarmContext, AlarmProvider };

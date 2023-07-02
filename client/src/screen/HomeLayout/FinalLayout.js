@@ -6,7 +6,7 @@ import { useNavigation } from "@react-navigation/native";
 export default function FinalLayout({ route }) {
   const navigation = useNavigation();
   const { title, finalLevel } = route.params;
-  if (finalLevel.length === 0) {
+  if (finalLevel?.length === 0) {
     // go back to the previous screen
     navigation.goBack();
   }
@@ -18,12 +18,12 @@ export default function FinalLayout({ route }) {
           <TouchableOpacity
             onPress={() => {
               console.log(item);
-              if (item.foods.length > 0)
+              if (item.foods?.length > 0)
                 navigation.navigate("FoodScreen", {
                   title: item.title,
                   foods: item.foods,
                 });
-              if (item.exercices.length > 0)
+              if (item.exercices?.length > 0)
                 navigation.navigate("Exercice", {
                   idx : key,  
                   item: item.exercices,

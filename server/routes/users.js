@@ -127,6 +127,35 @@ router.post("/login", function (req, res) {
           },
         })
         .then((alarm) => {
+          console.log("alarm", alarm);
+          const [hours, minutes] = "10:22".split(":");
+          const toDay = new Date();
+          const date = new Date(
+            toDay.getFullYear(),
+            toDay.getMonth(),
+            toDay.getDate(),
+            hours,
+            minutes
+          );
+          fetch(process.env.API_URL + "alarm", {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json",
+              authorization: "Bearer " + token,
+            },
+            body: JSON.stringify({
+              id: data.id,
+              time: date,
+              days: JSON.stringify([1, 2, 3, 4, 5]),
+              isOn: false,
+            }),
+          })
+            .then((res) => {
+              console.log("alarm initialized" + res.text());
+            })
+            .catch((err) => {
+              console.log(err);
+            });
           if (alarm) {
             console.log("with alarm", alarm);
             res.json({
