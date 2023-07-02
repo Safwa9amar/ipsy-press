@@ -1,6 +1,7 @@
 import React, { createContext, useEffect, useState } from "react";
 import { API_URL } from "@env";
 import axios from "axios";
+import fetchApi from "../helpers/fetchApi";
 
 // Create the context
 export const JobsContext = createContext([]);
@@ -17,6 +18,7 @@ export const JobsProvider = ({ children }) => {
     },
   ]);
   useEffect(() => {
+    fetchApi("/JobsProvider")
     const data = axios
       .get(`${API_URL}jobs`)
       .then((res) => {

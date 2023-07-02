@@ -1,5 +1,6 @@
 import { Component, createContext } from "react";
 import { API_URL } from "@env";
+import fetchApi from "../helpers/fetchApi";
 
 export const APIContext = createContext();
 class APIProvider extends Component {
@@ -12,6 +13,7 @@ class APIProvider extends Component {
     };
   }
   componentDidMount() {
+    fetchApi("/APIContext")
     this.fetchData();
   }
   fetchData = async () => {

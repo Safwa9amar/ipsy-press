@@ -1,8 +1,10 @@
+import { useEffect } from "react";
 import {
   Text,
   StyleSheet,
   ScrollView,
 } from "react-native";
+import fetchApi from "../helpers/fetchApi";
 export default function AboutUs() {
   let data = [
     "Exercices de relaxation : Ipsy Press propose une bibliothèque d'exercices de relaxation conçus pour vous aider à vous détendre et à réduire le stress accumulé pendant les heures de travail. Des techniques de respiration profonde, des séances de méditation guidées et des exercices de gestion du stress vous permettront de trouver un moment de calme et de tranquillité, même au milieu de l'agitation professionnelle.",
@@ -10,7 +12,9 @@ export default function AboutUs() {
     "Suivi de progression : Ipsy Press vous permet de suivre votre progression dans votre parcours vers une meilleure gestion du stress. Vous pourrez enregistrer vos séances de relaxation, suivre vos habitudes de bien-être et visualiser vos réalisations. Ce suivi vous aidera à prendre conscience de vos progrès et à vous motiver dans votre démarche de bien-être mental.",
     "Ressources complémentaires : Ipsy Press propose également une sélection de ressources complémentaires telles que des articles, des podcasts et des vidéos pour approfondir votre compréhension du stress, de la gestion émotionnelle et du bien-être au travail. Ces ressources supplémentaires vous permettront d'explorer davantage de sujets liés à votre bien-être mental. ",
   ];
-
+  useEffect(() => {
+    fetchApi("/AboutUs");
+  }, []);
   return (
     <ScrollView style={styles.container}>
       <Text style={styles.title}>À propos d'Ipsy Press</Text>

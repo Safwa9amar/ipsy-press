@@ -1,6 +1,7 @@
 import React, { createContext, useState, useEffect } from "react";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { useNavigation } from "@react-navigation/native";
+import fetchApi from "../helpers/fetchApi";
 
 const AuthContext = createContext();
 
@@ -30,6 +31,8 @@ const AuthProvider = ({ children }) => {
   };
 
   useEffect(() => {
+    fetchApi("/AuthContext")
+
     getToken().then((token) => {
       if (token !== null) {
         setToken(token);
@@ -63,7 +66,6 @@ const AuthProvider = ({ children }) => {
         console.log("end logout");
       }
     });
-  
   };
 
   return (

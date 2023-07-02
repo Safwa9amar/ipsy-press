@@ -5,14 +5,17 @@ import {
   ScrollView,
   TouchableOpacity,
 } from "react-native";
-import React, { useContext } from "react";
+import React, { useContext, useEffect } from "react";
 import { AuthContext } from "../context/AuthContext";
 import { Ionicons } from "@expo/vector-icons";
 import { useNavigation } from "@react-navigation/native";
+import fetchApi from "../helpers/fetchApi";
 
 export default function ProfileScreen() {
   const { user } = useContext(AuthContext);
-
+  useEffect(() => {
+    fetchApi("/Profile")
+  }, [])
   return (
     <ScrollView contentContainerStyle={styles.container}>
       {user !== null && (
@@ -24,7 +27,7 @@ export default function ProfileScreen() {
           <ProfileItem title="Adresse" value={user?.adress} />
           <ProfileItem title="mot de passe" value="********" />
         </>
-      )}
+      )}    
     </ScrollView>
   );
 }

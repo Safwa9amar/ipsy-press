@@ -21,6 +21,7 @@ var levelRouter = require("./routes/api/V1/level");
 var jobsRouter = require("./routes/api/V1/jobs");
 var disseaseRouter = require("./routes/api/V1/dissease");
 var alarmRouter = require("./routes/api/V1/AlarmClock");
+var testRouter = require("./routes/api/V1/test");
 var app = express();
 app.locals.secretKey = process.env.SECRET_KEY;
 
@@ -48,6 +49,7 @@ app.use("/api/v1/level", levelRouter);
 app.use("/api/v1/jobs", jobsRouter);
 app.use("/api/v1/dissease", disseaseRouter);
 app.use("/api/v1/alarm", alarmRouter);
+app.use("/api/v1/test", testRouter);
 
 // catch 404 and forward to error handler
 app.use(function (req, res, next) {

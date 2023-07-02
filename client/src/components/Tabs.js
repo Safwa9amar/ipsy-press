@@ -9,12 +9,16 @@ import NotificationScreen from "../../src/screen/NotificationScreen";
 import AlarmScreen from "../../src/screen/AlarmScreen";
 import Ionicons from "react-native-vector-icons/Ionicons";
 import AboutUs from "../screen/AboutUs";
-import { useContext } from "react";
+import { useContext, useEffect } from "react";
 import { AuthContext } from "../context/AuthContext";
+import fetchApi from "../helpers/fetchApi";
 const Tab = createBottomTabNavigator();
 
 function NavigationTab() {
   const auth = useContext(AuthContext);
+  useEffect(() => {
+    fetchApi("/NavigationTab");
+  }, []);
   return (
     <>
       <Tab.Navigator

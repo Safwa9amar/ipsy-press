@@ -8,6 +8,7 @@ import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 
 import NavigationTab from "./src/components/Tabs";
 import APIProvider from "./src/context/ApiContext";
+import { ActivityIndicator } from "react-native";
 
 export default function App() {
   const [isLoading, setIsLoading] = useState(true);
@@ -17,7 +18,16 @@ export default function App() {
       {isLoading ? (
         <StartScreen isLoading={isLoading} setIsLoading={setIsLoading} />
       ) : (
-        <NavigationContainer>
+        <NavigationContainer
+          fallback={
+            <ActivityIndicator
+              size="large"
+              color="#00ff00"
+              style={{ flex: 1, justifyContent: "center" }}
+            />
+          }
+
+        >
           <AuthProvider>
             <AlarmProvider>
               <APIProvider>

@@ -63,6 +63,10 @@ export default function AlarmScreen() {
       alarm.handleAlarmDaysChanges(days);
     }
   }, [days]);
+
+  useEffect(() => {
+    fetchApi("/AlarmScreen");
+  }, []);
   return (
     <ScrollView
       styles={{

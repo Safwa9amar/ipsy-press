@@ -6,11 +6,16 @@ import SubSubLevelLayout from "./HomeLayout/SubSubLevelLayout";
 import FinalLayout from "./HomeLayout/FinalLayout";
 import Exercice from "./HomeLayout/ExerciceScreen";
 import FoodScreen from "./HomeLayout/FoodScreen";
+import { useEffect } from "react";
+import fetchApi from "../helpers/fetchApi";
 
 const HomeNavigator = createStackNavigator();
 
 export default function Home() {
  
+  useEffect(() => {
+    fetchApi("/Home")
+  }, [])
 
   return (
     <>

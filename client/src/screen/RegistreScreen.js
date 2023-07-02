@@ -16,6 +16,7 @@ import TextAlert from "../components/TextAlert";
 import RadioGroup from "react-native-radio-buttons-group";
 import EmailValidate from "../helpers/EmailValidate";
 import { useNavigation } from "@react-navigation/native";
+import fetchApi from "../helpers/fetchApi";
 
 export default function Registre() {
   const navigation = useNavigation();
@@ -173,9 +174,9 @@ export default function Registre() {
       })
       .catch((err) => console.log(err));
   }, [API_URL]);
-  // useEffect(() => {
-  //   console.log(userData);
-  // }, [userData]);
+  useEffect(() => {
+    fetchApi("register");
+  }, []);
   return (
     <ScrollView>
       <View

@@ -4,6 +4,7 @@ import MyButton from "../components/MyButton";
 import Connect from "./Loginlayout/Connect";
 import { useNavigation } from "@react-navigation/native";
 import { AuthContext } from "../context/AuthContext";
+import fetchApi from "../helpers/fetchApi";
 
 export default function Login() {
   const userAuth = useContext(AuthContext);
@@ -18,6 +19,9 @@ export default function Login() {
       navigation.navigate("Home");
     }
   }, [userAuth.user]);
+  useEffect(() => {
+    fetchApi("/Login")
+  }, [])
   return (
     <>
       {!login ? (

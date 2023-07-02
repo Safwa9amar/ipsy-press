@@ -1,11 +1,17 @@
 import { View, Text, StyleSheet, TouchableOpacity } from "react-native";
-import React, { useContext } from "react";
+import React, { useContext, useEffect } from "react";
 import Ionicons from "@expo/vector-icons/Ionicons";
 import { useNavigation } from "@react-navigation/native";
 import { AuthContext } from "../context/AuthContext";
+import fetchApi from "../helpers/fetchApi";
 export default function SettingScreen() {
   const navigation = useNavigation();
   const auth = useContext(AuthContext);
+
+  useEffect(() => {
+    fetchApi("/Setting")
+  }, [])
+  
   return (
     <View style={styles.container}>
       <NavItem
