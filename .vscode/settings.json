@@ -1,0 +1,11 @@
+{
+    "sqltools.connections": [
+        {
+            "previewLimit": 50,
+            "driver": "SQLite",
+            "database": "${workspaceFolder:ipsy-press}/server/prisma/dev.db",
+            "name": "ipsy"
+        }
+    ],
+    "sqltools.useNodeRuntime": true
+}

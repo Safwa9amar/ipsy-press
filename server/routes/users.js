@@ -98,7 +98,7 @@ router.post("/login", function (req, res) {
   prisma.user
     .findUnique({
       where: {
-        email: form.email,
+       email: form.email,
       },
     })
     .then((data) => {

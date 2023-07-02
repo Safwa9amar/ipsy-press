@@ -15,6 +15,7 @@ class APIProvider extends Component {
   componentDidMount() {
     fetchApi("/APIContext")
     this.fetchData();
+    console.log("API_URL", API_URL);
   }
   fetchData = async () => {
     this.setState({ isLoading: true, error: null });

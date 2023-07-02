@@ -7,9 +7,9 @@ import TextAlert from "../../components/TextAlert";
 import { BASE_URL } from "@env";
 import { useNavigation } from "@react-navigation/native";
 import { AuthContext } from "../../context/AuthContext";
-import { AlarmContext } from "../../context/AlarmContext";
 
 export default function Connect() {
+  console.log("BASE_URL", BASE_URL);
   const userAuth = useContext(AuthContext);
   const [translateXAnim] = useState(new Animated.Value(-400));
   const [fadeAnim] = useState(new Animated.Value(0));

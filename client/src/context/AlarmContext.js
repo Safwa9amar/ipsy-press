@@ -22,6 +22,8 @@ Notifications.setNotificationHandler({
 });
 
 const AlarmProvider = ({ children }) => {
+  console.log("API_URL", API_URL);
+
   const { user, token, isLoggedIn } = useContext(AuthContext);
   const [alarmId, setAlarmId] = useState(0);
   const [alarm, setAlarm] = useState(null);
